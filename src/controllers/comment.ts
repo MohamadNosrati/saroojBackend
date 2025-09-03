@@ -16,8 +16,8 @@ export const createComment = catchAsync(async (req: Request, res: Response) => {
 export const getAllComments = catchAsync(
   async (req: Request, res: Response) => {
     const comments = await CommentModel.find();
-    res.status(201).json({
-      status: 201,
+    res.status(200).json({
+      status: 200,
       message: "لیست نظرات با موفقیت دریافت شد.",
       data: comments,
     });
@@ -28,7 +28,7 @@ export const findComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const comment = await CommentModel.findById(req.params.id);
     if(!comment){
-      return next(new CustomError(400,"no comment"))
+      return next(new CustomError(400,"no comment with this id"))
     }
     res.status(201).json({
       status: 201,
