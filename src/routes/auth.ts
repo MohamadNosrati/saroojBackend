@@ -10,7 +10,7 @@ const validator = createValidator({
 
 const AuthRoutes = express.Router();
 
-AuthRoutes.post("/signup",signup);
+AuthRoutes.post("/signup",validator.body(userSignupBody),signup);
 AuthRoutes.post("/signin",validator.body(userSigninBody),signin);
 
 export default AuthRoutes;

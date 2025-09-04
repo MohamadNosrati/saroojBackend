@@ -3,7 +3,7 @@ import projectRouter from "./routes/project.js";
 import commentRouter from "./routes/comment.js";
 import CategoryRouter from "./routes/category.js";
 import teamRouter from "./routes/team.js";
-import globalErrorHandler from "./tools/globalErrorHandler.js";
+import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import notFoundErrorHandler from "./tools/notFoundHandler.js";
 import AuthRoutes from "./routes/auth.js";
 import dotenv from "dotenv";

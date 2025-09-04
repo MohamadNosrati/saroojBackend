@@ -1,10 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
-import type CustomError from "./CustomError.js";
 
 const globalErrorHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
-    console.log(error)
-    if(error.error.isJoi){
-        console.log("heeeeeee")
+    if(error?.error && error.error.isJoi){
         error.status = 400;
         error.message = error.error.toString()
     }

@@ -3,4 +3,6 @@ import catchAsync from "../tools/catchAsync.js";
 
 const authentication = catchAsync(async(req:Request,res:Response,next:NextFunction)=>{
     next()
-})
+});
+
+export default authentication;

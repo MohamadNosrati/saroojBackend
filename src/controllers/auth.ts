@@ -5,9 +5,8 @@ import CustomError from "../tools/CustomError.js";
 import bcrypt from "bcrypt";
 import tokenGenerator from "../tools/tokenGenerator.js";
 
-export const signup = () =>
-  catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    console.log("here");
+export const signup = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const prvUser = await UserModel.findOne({
       $or: [{ email: req.body.email }, { userName: req.body.userName }],
     });
@@ -32,12 +31,14 @@ export const signup = () =>
       data: user,
       token: token,
     });
-  });
+  }
+);
 
-export const signin = () =>
-  catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+export const signin = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserModel.findOne({ email: req.body.email });
     if (!user) {
+      console.log("here")
       return next(new CustomError(400, "no user with this email or password!"));
     }
     const passwordCorrect = await bcrypt.compare(
@@ -54,4 +55,5 @@ export const signin = () =>
       data: user,
       token: token,
     });
-  });
+  }
+);

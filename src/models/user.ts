@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "admin",
       enum: {
-        values: ["amdin", "superAdmin"],
+        values: ["admin", "superAdmin"],
         message: "role can only be admin or superAdmin",
       },
     },
