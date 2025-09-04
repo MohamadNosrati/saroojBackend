@@ -38,7 +38,6 @@ export const signin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserModel.findOne({ email: req.body.email });
     if (!user) {
-      console.log("here")
       return next(new CustomError(400, "no user with this email or password!"));
     }
     const passwordCorrect = await bcrypt.compare(

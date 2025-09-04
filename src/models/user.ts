@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 import idPlugin from "../tools/idPlugin.js";
 import bcrypt from "bcrypt";
+import type { IUser } from "../types/user.js";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema<IUser>(
   {
     email: {
       type: String,
