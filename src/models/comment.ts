@@ -7,6 +7,7 @@ const commentSchema = new mongoose.Schema<ICommentSchema>(
     fullName: {
       type: String,
       required: [true, "fullName field is required"],
+      lowercase: true
     },
     text: {
       type: String,
@@ -18,7 +19,7 @@ const commentSchema = new mongoose.Schema<ICommentSchema>(
     },
     isActive: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   {

@@ -1,9 +1,13 @@
 import Joi from "joi";
 
-export const createCategroyBodySchema = Joi.object({
+export const createTeamateBodySchema = Joi.object({
   title: Joi.string().required().messages({
     "string.base": "title must be of type string!",
     "any.required": "title field is required!",
+  }),
+  position: Joi.string().required().messages({
+    "string.base": "position must be of type string!",
+    "any.required": "position field is required!",
   }),
   description: Joi.string().required().messages({
     "string.base": "description must be of type string!",
@@ -18,9 +22,12 @@ export const createCategroyBodySchema = Joi.object({
   }),
 });
 
-export const updateCategroyBodySchema = Joi.object({
+export const updateTeamateBodySchema = Joi.object({
   title: Joi.string().messages({
     "string.base": "title must be of type string!",
+  }),
+  position: Joi.string().required().messages({
+    "string.base": "position must be of type string!",
   }),
   description: Joi.string().messages({
     "string.base": "description must be of type string!",

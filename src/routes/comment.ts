@@ -7,7 +7,7 @@ import {
   updateComment,
 } from "../controllers/comment.js";
 import { createValidator } from "express-joi-validation";
-import { commentBodySchema } from "../validators/comment.js";
+import { createCommentBodySchema,updateCommentBodySchema } from "../validators/comment.js";
 import authentication from "../middlewares/authenction.js";
 import authorization from "../middlewares/authorization.js";
 
@@ -24,7 +24,7 @@ commentRouter.get(
   authorization(["admin"]),
   findComment
 );
-commentRouter.post("/", validator.body(commentBodySchema), createComment);
+commentRouter.post("/", validator.body(createCommentBodySchema), createComment);
 commentRouter.delete(
   "/:id",
   authentication,
@@ -35,6 +35,7 @@ commentRouter.patch(
   "/:id",
   authentication,
   authorization(["admin"]),
+  validator.body(updateCommentBodySchema),
   updateComment
 );
 

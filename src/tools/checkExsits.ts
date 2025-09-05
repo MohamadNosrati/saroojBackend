@@ -6,16 +6,23 @@ import mongoose from "mongoose";
 const checkExists = async (
   modal: Model<any>,
   next: NextFunction,
-  id: string
+  id?: string,
+  populate?: string,
+  populateFields?: string[]
 ) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    
+  if (!mongoose.Types.ObjectId.isValid(id as string)) {
     return next(new CustomError(400, "فرمت آیدی صحیح نمیباشد."));
   }
-  const item = await modal.findById(id);
+  let item;
+  if (populate && populateFields) {
+    item = await modal.findById(id).populate(populate, populateFields);
+  } else {
+    item = await modal.findById(id);
+  }
   if (!item) {
     return next(new CustomError(400, "آیتمی با این آیدی وجود ندارد!"));
   }
+  return item;
 };
 
 export default checkExists;

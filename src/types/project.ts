@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+type IImageType = "before" | "after";
+
+interface IImage {
+    type:IImageType;
+    pictureId:mongoose.Schema.Types.ObjectId;
+}
+
 export interface IProjectSchema {
     title:string;
     description:string;
@@ -11,4 +18,6 @@ export interface IProjectSchema {
     endDate?:Date;
     createdAt:Date;
     updatedAt:Date;
+    images:IImage[];
+    pictureId:mongoose.Schema.Types.ObjectId;
 }
