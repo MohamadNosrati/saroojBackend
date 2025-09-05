@@ -14,9 +14,12 @@ export const createCategory = catchAsync(
   }
 );
 
-export const getAllCategorys = catchAsync(  
+export const getAllCategorys = catchAsync(
   async (req: Request, res: Response) => {
-    const categories = await CategoryModel.find().populate("pictureId",["image","id"]);
+    const categories = await CategoryModel.find().populate("pictureId", [
+      "image",
+      "id",
+    ]);
     res.status(201).json({
       status: 201,
       message: "لیست دسته یندی ها با موفقیت دریافت شد.",
@@ -27,7 +30,13 @@ export const getAllCategorys = catchAsync(
 
 export const findCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const category = await checkExists(CategoryModel, next, req.params?.id,"pictureId",["image","id"]);
+    const category = await checkExists(
+      CategoryModel,
+      next,
+      req.params?.id,
+      "pictureId",
+      ["image", "id"]
+    );
     res.status(201).json({
       status: 201,
       message: "دسته بندی با موفقیت دریافت شد",
@@ -39,7 +48,7 @@ export const findCategory = catchAsync(
 export const deleteCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     await checkExists(CategoryModel, next, req.params?.id);
-    await CategoryModel.findByIdAndDelete(req.params?.id)
+    await CategoryModel.findByIdAndDelete(req.params?.id);
     res.status(201).json({
       status: 201,
       message: "دسته یندی با موفقیت پاک شد.",
@@ -48,12 +57,20 @@ export const deleteCategory = catchAsync(
 );
 
 export const updateCategory = catchAsync(
-  async (req: Request, res: Response,next:NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     await checkExists(CategoryModel, next, req.params?.id);
+    const newCategory = await CategoryModel.findByIdAndUpdate(
+      req?.params?.id,
+      { $set: req?.body },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     res.status(201).json({
       status: 201,
       message: "دسته یندی با موفقیت به روز رسانی شد.",
-      data: "",
+      data: newCategory,
     });
   }
 );

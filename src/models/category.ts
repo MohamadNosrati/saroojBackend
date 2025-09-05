@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 import type { ICategorySchema } from "../types/category.js";
 import idPlugin from "../tools/idPlugin.js";
-import PictureModel from "./picture.js";
-import fs from "fs";
-import CustomError from "../tools/CustomError.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
 const categorySchema = new mongoose.Schema<ICategorySchema>(
   {
@@ -11,6 +8,7 @@ const categorySchema = new mongoose.Schema<ICategorySchema>(
       type: String,
       required: [true, "title field is required"],
       lowercase: true,
+      unique:[true,"title filed must be unique!"]
     },
     description: {
       type: String,

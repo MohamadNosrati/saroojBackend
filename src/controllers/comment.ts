@@ -26,10 +26,7 @@ export const getAllComments = catchAsync(
 
 export const findComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const comment = await CommentModel.findById(req.params.id);
-    if(!comment){
-      return next(new CustomError(400,"no comment with this id"))
-    }
+    const comment = await checkExists(CommentModel, next, req.params?.id);
     res.status(201).json({
       status: 201,
       message: "پروژه با موفقیت دریافت شد",
@@ -52,10 +49,20 @@ export const deleteComment = catchAsync(
 export const updateComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     await checkExists(CommentModel, next, req.params.id as string);
+    const newComment = await CommentModel.findByIdAndUpdate(
+      req.params?.id,
+      {
+        $set: req.body,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     res.status(201).json({
       status: 201,
       message: "نظر با موفقیت به روز رسانی شد.",
-      data: "",
+      data: newComment,
     });
   }
 );
