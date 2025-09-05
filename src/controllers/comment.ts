@@ -2,7 +2,6 @@ import type { NextFunction, Request, Response } from "express";
 import CommentModel from "../models/comment.js";
 import catchAsync from "../tools/catchAsync.js";
 import checkExists from "../tools/checkExsits.js";
-import CustomError from "../tools/CustomError.js";
 
 export const createComment = catchAsync(async (req: Request, res: Response) => {
   const comment = await CommentModel.create(req.body);
@@ -26,7 +25,7 @@ export const getAllComments = catchAsync(
 
 export const findComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const comment = await checkExists(CommentModel, next, req.params?.id);
+    const comment = await checkExists(CommentModel, next,"دسته بندی", req.params?.id);
     res.status(201).json({
       status: 201,
       message: "پروژه با موفقیت دریافت شد",

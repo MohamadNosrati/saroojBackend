@@ -29,6 +29,7 @@ export const findTeamate = catchAsync(
     const teamate = await checkExists(
       TeamModel,
       next,
+      "دسته بندی",
       req.params?.id,
       "Picture",
       ["image", "id"]
@@ -43,7 +44,7 @@ export const findTeamate = catchAsync(
 
 export const deleteTeamate = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    await checkExists(TeamModel, next, req.params?.id);
+    await checkExists(TeamModel, next, "دسته بندی", req.params?.id);
     await TeamModel.findByIdAndDelete(req.params?.id);
     res.status(201).json({
       status: 201,
@@ -54,7 +55,7 @@ export const deleteTeamate = catchAsync(
 
 export const updateTeamate = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const teamate = await checkExists(TeamModel, next, req.params?.id);
+    const teamate = await checkExists(TeamModel, next,"دسته بندی", req.params?.id);
     const newTeamte = await TeamModel.findByIdAndUpdate(
       req.params?.id,
       {
@@ -65,8 +66,8 @@ export const updateTeamate = catchAsync(
         runValidators: true,
       }
     );
-    if(teamate?.pictureId !== newTeamte?.pictureId){
-        pictureDeleter(teamate?.pictureId)
+    if (teamate?.pictureId !== newTeamte?.pictureId) {
+      pictureDeleter(teamate?.pictureId);
     }
     res.status(201).json({
       status: 201,

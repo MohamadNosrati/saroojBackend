@@ -25,6 +25,14 @@ export const createProjectBodySchema = Joi.object({
     "string.base": "description must be of type string!",
     "any.required": "description field is required!",
   }),
+  artitectureStyle: Joi.string().required().messages({
+    "string.base": "description must be of type string!",
+    "any.required": "description field is required!",
+  }),
+  categoryId: Joi.string().required().messages({
+    "string.base": "categoryId must be of type string!",
+    "any.required": "categoryId field is required!",
+  }),
   pictureId: Joi.string().required().messages({
     "string.base": "pictureId must be of type string!",
     "any.required": "pictureId field is required!",
@@ -58,6 +66,12 @@ export const updateProjectBodySchema = Joi.object({
   }),
   description: Joi.string().messages({
     "string.base": "description must be of type string!",
+  }),
+  artitectureStyle: Joi.string().messages({
+    "string.base": "description must be of type string!",
+  }),
+  categoryId: Joi.string().messages({
+    "string.base": "categoryId must be of type string!",
   }),
   pictureId: Joi.string().messages({
     "string.base": "pictureId must be of type string!",

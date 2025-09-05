@@ -34,6 +34,7 @@ export const findCategory = catchAsync(
     const category = await checkExists(
       CategoryModel,
       next,
+      "دسته بندی",
       req.params?.id,
       "pictureId",
       ["image", "id"]
@@ -48,7 +49,7 @@ export const findCategory = catchAsync(
 
 export const deleteCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    await checkExists(CategoryModel, next, req.params?.id);
+    await checkExists(CategoryModel, next,"دسته بندی", req.params?.id);
     await CategoryModel.findByIdAndDelete(req.params?.id);
     res.status(201).json({
       status: 201,
@@ -59,7 +60,7 @@ export const deleteCategory = catchAsync(
 
 export const updateCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const category =await checkExists(CategoryModel, next, req.params?.id);
+    const category =await checkExists(CategoryModel, next,"دسته بندی", req.params?.id);
     const newCategory = await CategoryModel.findByIdAndUpdate(
       req?.params?.id,
       { $set: req?.body },

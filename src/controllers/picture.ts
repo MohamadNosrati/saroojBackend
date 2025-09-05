@@ -2,7 +2,6 @@ import type { NextFunction, Request, Response } from "express";
 import catchAsync from "../tools/catchAsync.js";
 import PictureModel from "../models/picture.js";
 import CustomError from "../tools/CustomError.js";
-import type { IPicture } from "../types/picture.js";
 
 export const uploadPicture = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
