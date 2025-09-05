@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import type { IProjectSchema } from "../types/project.js";
 import idPlugin from "../tools/idPlugin.js";
+import pictureDeleter from "../tools/pictureDeleter.js";
 
 const beforeAfterSchema = new mongoose.Schema({
   name: {
@@ -66,16 +67,19 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
   },
   {
     timestamps: true,
-    toJSON: {
-      virtuals: true,
-    },
-    toObject: {
-      virtuals: true,
-    },
+    versionKey: false,
   }
 );
 
 projectSchema.plugin(idPlugin);
+projectSchema.pre("findOneAndDelete", async function (next) {
+  const filter = this.getFilter();
+  const doc = await this.model.findOne(filter);
+  if (doc) {
+    await pictureDeleter(doc?.pictureId);
+  }
+  next();
+});
 
 const ProjectModel = mongoose.model("Project", projectSchema);
 

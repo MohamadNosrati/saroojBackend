@@ -29,13 +29,13 @@ projectRouter.post(
   validator.body(createProjectBodySchema),
   createProject
 );
-projectRouter.get(
+projectRouter.delete(
   "/:id",
   authentication,
   authorization(["admin"]),
   deleteProject
 );
-projectRouter.get(
+projectRouter.patch(
   "/:id",
   authentication,
   authorization(["admin"]),
