@@ -26,7 +26,7 @@ export const updateTeamateBodySchema = Joi.object({
   title: Joi.string().messages({
     "string.base": "title must be of type string!",
   }),
-  position: Joi.string().required().messages({
+  position: Joi.string().messages({
     "string.base": "position must be of type string!",
   }),
   description: Joi.string().messages({

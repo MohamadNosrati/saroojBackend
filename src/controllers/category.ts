@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import catchAsync from "../tools/catchAsync.js";
 import CategoryModel from "../models/category.js";
 import checkExists from "../tools/checkExsits.js";
+import pictureDeleter from "../tools/pictureDeleter.js";
 
 export const createCategory = catchAsync(
   async (req: Request, res: Response) => {
@@ -58,7 +59,7 @@ export const deleteCategory = catchAsync(
 
 export const updateCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    await checkExists(CategoryModel, next, req.params?.id);
+    const category =await checkExists(CategoryModel, next, req.params?.id);
     const newCategory = await CategoryModel.findByIdAndUpdate(
       req?.params?.id,
       { $set: req?.body },
@@ -67,6 +68,9 @@ export const updateCategory = catchAsync(
         runValidators: true,
       }
     );
+    if(category?.pictureId !== newCategory?.pictureId){
+       await pictureDeleter(category?.pictureId)
+    }
     res.status(201).json({
       status: 201,
       message: "دسته یندی با موفقیت به روز رسانی شد.",

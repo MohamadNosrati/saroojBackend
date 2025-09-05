@@ -30,12 +30,7 @@ const teamsSchema = new mongoose.Schema<ITeamate>(
   },
   {
     timestamps: true,
-    toJSON: {
-      virtuals: true,
-    },
-    toObject: {
-      virtuals: true,
-    },
+    versionKey:false,
   }
 );
 
@@ -49,6 +44,6 @@ teamsSchema.pre("findOneAndDelete", async function (next) {
   next();
 });
 
-const TeamModel = mongoose.model("Category", teamsSchema);
+const TeamModel = mongoose.model("Team", teamsSchema);
 
 export default TeamModel;

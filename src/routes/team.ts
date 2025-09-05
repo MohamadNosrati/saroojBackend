@@ -1,11 +1,4 @@
 import express from "express";
-import {
-  createTeam,
-  deleteTeam,
-  findTeam,
-  getAllTeams,
-  updateTeam,
-} from "../controllers/team.js";
 import authentication from "../middlewares/authenction.js";
 import authorization from "../middlewares/authorization.js";
 import { createValidator } from "express-joi-validation";
@@ -13,6 +6,13 @@ import {
   createTeamateBodySchema,
   updateTeamateBodySchema,
 } from "../validators/teamate.js";
+import {
+  createTeamate,
+  deleteTeamate,
+  findTeamate,
+  getAllTeamates,
+  updateTeamate,
+} from "../controllers/team.js";
 
 const validator = createValidator({
   passError: true,
@@ -20,22 +20,27 @@ const validator = createValidator({
 
 const teamRouter = express.Router();
 
-teamRouter.get("/", getAllTeams);
-teamRouter.get("/:id", authentication, authorization(["admin"]), findTeam);
+teamRouter.get("/", getAllTeamates);
+teamRouter.get("/:id", authentication, authorization(["admin"]), findTeamate);
 teamRouter.post(
   "/",
   authentication,
   authorization(["admin"]),
   validator.body(createTeamateBodySchema),
-  createTeam
+  createTeamate
 );
-teamRouter.delete("/:id", authentication, authorization(["admin"]), deleteTeam);
+teamRouter.delete(
+  "/:id",
+  authentication,
+  authorization(["admin"]),
+  deleteTeamate
+);
 teamRouter.patch(
   "/:id",
   authentication,
   authorization(["admin"]),
   validator.body(updateTeamateBodySchema),
-  updateTeam
+  updateTeamate
 );
 
 export default teamRouter;
