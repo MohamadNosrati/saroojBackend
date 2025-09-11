@@ -51,8 +51,10 @@ export const signin = catchAsync(
     res.status(200).json({
       status: 200,
       message: `user singd in successfully!`,
-      data: user,
-      token: token,
+      data: {
+        user: user,
+        token: token,
+      },
     });
   }
 );

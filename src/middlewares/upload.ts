@@ -9,6 +9,7 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ) => {
+  console.log("req is here",req)
   if (file?.size > Number(process.env.MAXFILESIZE) * 1000000) {
     cb(null, false);
     cb(

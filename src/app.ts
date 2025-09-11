@@ -9,9 +9,11 @@ import AuthRoutes from "./routes/auth.js";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import pictureRouter from "./routes/picture.js";
+import cors from "cors";
 
-dotenv.config()
+dotenv.config();
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
@@ -19,6 +21,7 @@ app.use(morgan("dev"));
 
 /// app routes
 
+app.use("/uploads",express.static('uploads'))
 app.use("/auth",AuthRoutes);
 app.use("/projects",projectRouter);
 app.use("/comments",commentRouter);

@@ -15,9 +15,10 @@ export const createTeamate = catchAsync(async (req: Request, res: Response) => {
 
 export const getAllTeamates = catchAsync(
   async (req: Request, res: Response) => {
-    const teamates = await TeamModel.find();
-    res.status(201).json({
-      status: 201,
+    const teamates = await TeamModel.find().populate("pictureId",["image","id"]);
+    console.log(teamates)
+    res.status(200).json({
+      status: 200,
       message: "لیست اعضای تیم  با موفقیت دریافت شد.",
       data: teamates,
     });

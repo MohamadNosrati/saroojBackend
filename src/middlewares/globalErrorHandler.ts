@@ -5,6 +5,7 @@ const globalErrorHandler = (error: any, req: Request, res: Response, next: NextF
         error.status = 400;
         error.message = error.error.toString()
     }
+    console.log(error)
     const status = error?.status || 500;
     const message = error?.message || "Internal server error!"
     res.status(status).json({
