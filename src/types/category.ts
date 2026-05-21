@@ -5,6 +5,8 @@ export interface ICategorySchema {
     description:string;
     isActive:boolean;
     pictureId:mongoose.Schema.Types.ObjectId;
+    alt:string;
     createdAt:Date;
     updatedAt:Date;
+
 }

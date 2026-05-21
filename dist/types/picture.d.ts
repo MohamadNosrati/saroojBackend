@@ -1,0 +1,11 @@
+export interface IPicture {
+    fieldname: string;
+    originalname: string;
+    encoding: string;
+    mimetype: string;
+    destination: string;
+    filename: string;
+    path: string;
+    size: 1705938;
+}
+//# sourceMappingURL=picture.d.ts.map

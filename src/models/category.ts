@@ -10,6 +10,10 @@ const categorySchema = new mongoose.Schema<ICategorySchema>(
       lowercase: true,
       unique:[true,"title filed must be unique!"]
     },
+    alt: {
+      type: String,
+      required: [true, "title field is required"],
+    },
     description: {
       type: String,
       required: [true, "description field is required"],

@@ -10,6 +10,10 @@ const teamsSchema = new mongoose.Schema<ITeamate>(
       required: [true, "title field is required"],
       lowercase: true,
     },
+    alt: {
+      type: String,
+      required: [true, "title field is required"],
+    },
     position: {
       type: String,
       required: [true, "position field is required"],
@@ -30,7 +34,7 @@ const teamsSchema = new mongoose.Schema<ITeamate>(
   },
   {
     timestamps: true,
-    versionKey:false,
+    versionKey: false,
   }
 );
 

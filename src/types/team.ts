@@ -8,4 +8,5 @@ export interface ITeamate {
     pictureId:mongoose.Schema.Types.ObjectId;
     createdAt:Date;
     updatedAt:Date;
+    alt:string;
 }

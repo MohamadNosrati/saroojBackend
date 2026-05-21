@@ -16,6 +16,10 @@ export const createCategroyBodySchema = Joi.object({
   isActive: Joi.bool().messages({
     "bool.base": "is Active field must be of type boolean",
   }),
+  alt: Joi.string().required().messages({
+    "string.base": "alt must be of type string!",
+    "any.required": "alt field is required!",
+  }),
 });
 
 export const updateCategroyBodySchema = Joi.object({
@@ -30,5 +34,8 @@ export const updateCategroyBodySchema = Joi.object({
   }),
   isActive: Joi.bool().messages({
     "bool.base": "is Active field must be of type boolean",
+  }),
+  alt: Joi.string().messages({
+    "string.base": "alt must be of type string!",
   }),
 });

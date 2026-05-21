@@ -36,7 +36,7 @@ export const findComment = catchAsync(
 
 export const deleteComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    await checkExists(CommentModel, next, req.params.id as string);
+    await checkExists(CommentModel, next,"نظر", req.params.id as string);
     await CommentModel.findByIdAndDelete(req.params.id);
     res.status(201).json({
       status: 201,
@@ -47,7 +47,8 @@ export const deleteComment = catchAsync(
 
 export const updateComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    await checkExists(CommentModel, next, req.params.id as string);
+    console.log("reqqqqqqqqqqq",req?.params)
+    await checkExists(CommentModel, next,"نظر", req.params.id as string);
     const newComment = await CommentModel.findByIdAndUpdate(
       req.params?.id,
       {
