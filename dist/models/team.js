@@ -7,6 +7,10 @@ const teamsSchema = new mongoose.Schema({
         required: [true, "title field is required"],
         lowercase: true,
     },
+    alt: {
+        type: String,
+        required: [true, "title field is required"],
+    },
     position: {
         type: String,
         required: [true, "position field is required"],

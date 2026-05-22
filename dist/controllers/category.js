@@ -15,8 +15,8 @@ export const getAllCategorys = catchAsync(async (req, res) => {
         "image",
         "id",
     ]);
-    res.status(201).json({
-        status: 201,
+    res.status(200).json({
+        status: 200,
         message: "لیست دسته یندی ها با موفقیت دریافت شد.",
         data: categories,
     });

@@ -20,9 +20,9 @@ export const getAllTeamates = catchAsync(async (req, res) => {
     });
 });
 export const findTeamate = catchAsync(async (req, res, next) => {
-    const teamate = await checkExists(TeamModel, next, "دسته بندی", req.params?.id, "Picture", ["image", "id"]);
-    res.status(201).json({
-        status: 201,
+    const teamate = await checkExists(TeamModel, next, "عضو تیم", req.params?.id, "pictureId", ["image", "id"]);
+    res.status(200).json({
+        status: 200,
         message: "هم تیمی با موفقیت دریافت شد",
         data: teamate,
     });

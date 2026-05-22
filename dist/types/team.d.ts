@@ -7,5 +7,6 @@ export interface ITeamate {
     pictureId: mongoose.Schema.Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;
+    alt: string;
 }
 //# sourceMappingURL=team.d.ts.map

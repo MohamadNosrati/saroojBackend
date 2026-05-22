@@ -8,6 +8,10 @@ export const createTeamateBodySchema = Joi.object({
         "string.base": "position must be of type string!",
         "any.required": "position field is required!",
     }),
+    alt: Joi.string().required().messages({
+        "string.base": "position must be of type string!",
+        "any.required": "position field is required!",
+    }),
     description: Joi.string().required().messages({
         "string.base": "description must be of type string!",
         "any.required": "description field is required!",
@@ -25,6 +29,9 @@ export const updateTeamateBodySchema = Joi.object({
         "string.base": "title must be of type string!",
     }),
     position: Joi.string().messages({
+        "string.base": "position must be of type string!",
+    }),
+    alt: Joi.string().messages({
         "string.base": "position must be of type string!",
     }),
     description: Joi.string().messages({

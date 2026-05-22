@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-export interface ICategorySchema {
+export interface ISliderSchema {
     title: string;
     description: string;
     isActive: boolean;
@@ -7,5 +7,6 @@ export interface ICategorySchema {
     alt: string;
     createdAt: Date;
     updatedAt: Date;
+    link: string;
 }
-//# sourceMappingURL=category.d.ts.map
+//# sourceMappingURL=slider.d.ts.map

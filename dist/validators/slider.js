@@ -1,6 +1,10 @@
 import Joi from "joi";
-export const createCategroyBodySchema = Joi.object({
+export const createSliderBodySchema = Joi.object({
     title: Joi.string().required().messages({
+        "string.base": "title must be of type string!",
+        "any.required": "title field is required!",
+    }),
+    link: Joi.string().required().messages({
         "string.base": "title must be of type string!",
         "any.required": "title field is required!",
     }),
@@ -20,8 +24,11 @@ export const createCategroyBodySchema = Joi.object({
         "any.required": "alt field is required!",
     }),
 });
-export const updateCategroyBodySchema = Joi.object({
+export const updateSliderBodySchema = Joi.object({
     title: Joi.string().messages({
+        "string.base": "title must be of type string!",
+    }),
+    link: Joi.string().messages({
         "string.base": "title must be of type string!",
     }),
     description: Joi.string().messages({
@@ -37,4 +44,4 @@ export const updateCategroyBodySchema = Joi.object({
         "string.base": "alt must be of type string!",
     }),
 });
-//# sourceMappingURL=category.js.map
+//# sourceMappingURL=slider.js.map

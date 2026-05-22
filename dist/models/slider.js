@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 import idPlugin from "../tools/idPlugin.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
-const categorySchema = new mongoose.Schema({
+const sliderSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, "title field is required"],
         lowercase: true,
         unique: [true, "title filed must be unique!"]
+    },
+    link: {
+        type: String,
+        required: [true, "title field is required"]
     },
     alt: {
         type: String,
@@ -28,8 +32,8 @@ const categorySchema = new mongoose.Schema({
     timestamps: true,
     versionKey: false,
 });
-categorySchema.plugin(idPlugin);
-categorySchema.pre("findOneAndDelete", async function (next) {
+sliderSchema.plugin(idPlugin);
+sliderSchema.pre("findOneAndDelete", async function (next) {
     const filter = this.getFilter();
     const doc = await this.model.findOne(filter);
     if (doc) {
@@ -37,6 +41,6 @@ categorySchema.pre("findOneAndDelete", async function (next) {
     }
     next();
 });
-const CategoryModel = mongoose.model("Category", categorySchema);
-export default CategoryModel;
-//# sourceMappingURL=category.js.map
+const SliderModel = mongoose.model("Slider", sliderSchema);
+export default SliderModel;
+//# sourceMappingURL=slider.js.map
