@@ -10,6 +10,8 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import pictureRouter from "./routes/picture.js";
 import cors from "cors";
+import sliderRouter from "./routes/slider.js";
+import blogRouter from "./routes/blog.js";
 
 dotenv.config();
 const app = express();
@@ -17,20 +19,17 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-
-
 /// app routes
 
-app.use("/uploads",express.static('uploads'))
-app.use("/auth",AuthRoutes);
-app.use("/projects",projectRouter);
-app.use("/comments",commentRouter);
-app.use("/categories",categoryRouter);
-app.use("/teamates",teamRouter);
-app.use("/pictures",pictureRouter);
-
-
-
+app.use("/uploads", express.static("uploads"));
+app.use("/auth", AuthRoutes);
+app.use("/projects", projectRouter);
+app.use("/comments", commentRouter);
+app.use("/categories", categoryRouter);
+app.use("/teamates", teamRouter);
+app.use("/sliders", sliderRouter);
+app.use("/blogs", blogRouter);
+app.use("/pictures", pictureRouter);
 
 app.use(notFoundErrorHandler);
 app.use(globalErrorHandler);

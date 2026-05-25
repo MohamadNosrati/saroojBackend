@@ -7,11 +7,11 @@ import { createSliderBodySchema, updateSliderBodySchema } from "../validators/sl
 const validator = createValidator({
     passError: true,
 });
-const categoryRouter = express.Router();
-categoryRouter.get("/", getAllSliders);
-categoryRouter.get("/:id", authentication, authorization(["admin"]), findSlider);
-categoryRouter.post("/", authentication, authorization(["admin"]), validator.body(createSliderBodySchema), createSlider);
-categoryRouter.delete("/:id", authentication, authorization(["admin"]), deleteSlider);
-categoryRouter.patch("/:id", authentication, authorization(["admin"]), validator.body(updateSliderBodySchema), updateSlider);
-export default categoryRouter;
+const sliderRouter = express.Router();
+sliderRouter.get("/", getAllSliders);
+sliderRouter.get("/:id", authentication, authorization(["admin"]), findSlider);
+sliderRouter.post("/", authentication, authorization(["admin"]), validator.body(createSliderBodySchema), createSlider);
+sliderRouter.delete("/:id", authentication, authorization(["admin"]), deleteSlider);
+sliderRouter.patch("/:id", authentication, authorization(["admin"]), validator.body(updateSliderBodySchema), updateSlider);
+export default sliderRouter;
 //# sourceMappingURL=slider.js.map

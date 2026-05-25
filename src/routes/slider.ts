@@ -9,29 +9,29 @@ const validator = createValidator({
     passError: true,
 });
 
-const categoryRouter = express.Router();
+const sliderRouter = express.Router();
 
-categoryRouter.get("/", getAllSliders);
-categoryRouter.get(
+sliderRouter.get("/", getAllSliders);
+sliderRouter.get(
     "/:id",
     authentication,
     authorization(["admin"]),
     findSlider
 );
-categoryRouter.post(
+sliderRouter.post(
     "/",
     authentication,
     authorization(["admin"]),
     validator.body(createSliderBodySchema),
     createSlider
 );
-categoryRouter.delete(
+sliderRouter.delete(
     "/:id",
     authentication,
     authorization(["admin"]),
     deleteSlider
 );
-categoryRouter.patch(
+sliderRouter.patch(
     "/:id",
     authentication,
     authorization(["admin"]),
@@ -39,4 +39,4 @@ categoryRouter.patch(
     updateSlider
 );
 
-export default categoryRouter;
+export default sliderRouter;
