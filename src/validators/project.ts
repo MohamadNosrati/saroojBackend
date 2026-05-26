@@ -99,4 +99,7 @@ export const updateProjectBodySchema = Joi.object({
   images: Joi.array().items(pictureSchema).messages({
     "array.base": "images filed must be of type array!",
   }),
+  alt: Joi.string().required().messages({
+    "string.base": "description must be of type string!",
+  }),
 });

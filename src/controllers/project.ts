@@ -37,7 +37,8 @@ export const findProject = catchAsync(
     const project = await ProjectModel.findById(req.params?.id)
       .populate("categoryId", ["title", "id"])
       .populate("pictureId", ["image", "id"])
-      .populate("images.pictureId", ["image", "id"]);
+      .populate("images.before.pictureId", ["image", "id"])
+      .populate("images.after.pictureId", ["image", "id"]);
     res.status(201).json({
       status: 201,
       message: "پروژه با موفقیت دریافت شد",
@@ -51,12 +52,13 @@ export const deleteProject = catchAsync(
     await checkExists(ProjectModel, next, "پروژه", req.params?.id);
     const project = await ProjectModel.findByIdAndDelete(req?.params?.id)
       .populate("pictureId", ["image", "id"])
-      .populate("images.pictureId", ["image", "id"]);
-
-    const imageIds = project?.images?.map((item: any) => item?.pictureId?.id);
+      .populate("images.before.pictureId", ["image", "id"])
+      .populate("images.after.pictureId", ["image", "id"]);
+    console.log("project", project?.images[0])
+    const imageIds = project?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap(elem => elem);
     const imageNames = project?.images?.map(
-      (item: any) => item?.pictureId?.image
-    );
+      ({ before, after }: any) => [before?.pictureId?.image, after?.pictureId?.image]
+    )?.flatMap(elem => elem)
     await PictureModel.deleteMany({ _id: { $in: imageIds } });
     imageNames?.forEach((item) => unlinkFile(item));
     res.status(201).json({
@@ -69,9 +71,12 @@ export const deleteProject = catchAsync(
 export const updateProject = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     await checkExists(ProjectModel, next, "پروژه", req.params?.id);
+
     const project: any = await ProjectModel.findById(req?.params?.id)
       .populate("pictureId", ["image", "id"])
-      .populate("images.pictureId", ["image", "id"]);
+      .populate("images.before.pictureId", ["image", "id"])
+      .populate("images.after.pictureId", ["image", "id"]);
+    console.log("hereeee")
     const newProject: any = await ProjectModel.findByIdAndUpdate(
       req?.params?.id,
       {
@@ -83,20 +88,29 @@ export const updateProject = catchAsync(
       }
     )
       .populate("pictureId", ["image", "id"])
-      .populate("images.pictureId", ["image", "id"]);
+      .populate("images.before.pictureId", ["image", "id"])
+      .populate("images.after.pictureId", ["image", "id"]);
     if (newProject?.pictureId.id !== project?.pictureId.id) {
       await pictureDeleter(project?.pictureId.id);
     }
-    const newImageIds = newProject?.images?.map((item: any) => item?.id);
-    const prvImageIds = project?.images?.map((item: any) => item?.id);
+
+    const newImageIds = newProject?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem:any)=>elem);
+    const prvImageIds = project?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem:any)=>elem);;
     const removedIds = prvImageIds?.filter(
       (item: any) => !newImageIds.includes(item)
     );
+    console.log("removedIds",removedIds)
     await PictureModel.deleteMany({ _id: { $in: removedIds } });
-    const removedImages = project?.images
-      ?.filter((item: any) => removedIds.includes(item?.id))
-      ?.map((item: any) => item.image);
-    removedImages?.forEach((item: any) => unlinkFile(item));
+
+    const newImageNames = newProject?.images?.map(({ before, after }: any) => [before?.pictureId?.image, after?.pictureId?.image])?.flatMap((elem:any)=>elem);;
+    const prvImageNames = project?.images?.map(({ before, after }: any) => [before?.pictureId?.image, after?.pictureId?.image])?.flatMap((elem:any)=>elem);;
+    const removedImageNames = prvImageNames?.filter(
+      (item: any) => !newImageNames.includes(item)
+    );
+
+
+
+    removedImageNames?.forEach((item: any) => unlinkFile(item));
     res.status(201).json({
       status: 201,
       message: "پروزه با موفقیت به روز رسانی شد.",
