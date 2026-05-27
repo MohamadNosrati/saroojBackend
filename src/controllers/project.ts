@@ -5,6 +5,7 @@ import checkExists from "../tools/checkExsits.js";
 import CategoryModel from "../models/category.js";
 import PictureModel from "../models/picture.js";
 import pictureDeleter, { unlinkFile } from "../tools/pictureDeleter.js";
+import CustomError from "../tools/CustomError.js";
 
 export const createProject = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -39,10 +40,30 @@ export const findProject = catchAsync(
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"]);
-    res.status(201).json({
-      status: 201,
+    res.status(200).json({
+      status: 200,
       message: "پروژه با موفقیت دریافت شد",
       data: project,
+    });
+  }
+);
+
+export const findProjectBySlug = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log("test", req?.params?.slug)
+    const project = await ProjectModel.findOne({ title: decodeURIComponent(req.params?.slug?.trim() as string) });
+    if (!project) {
+      return next(new CustomError(400, "پروژه ای با این نام وجود ندارد."))
+    }
+    const projectWithImages = await ProjectModel.findById(project?.id)
+      .populate("categoryId", ["title", "id"])
+      .populate("pictureId", ["image", "id"])
+      .populate("images.before.pictureId", ["image", "id"])
+      .populate("images.after.pictureId", ["image", "id"]);
+    res.status(200).json({
+      status: 200,
+      message: "پروژه با موفقیت دریافت شد",
+      data: projectWithImages,
     });
   }
 );
@@ -94,16 +115,16 @@ export const updateProject = catchAsync(
       await pictureDeleter(project?.pictureId.id);
     }
 
-    const newImageIds = newProject?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem:any)=>elem);
-    const prvImageIds = project?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem:any)=>elem);;
+    const newImageIds = newProject?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem: any) => elem);
+    const prvImageIds = project?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem: any) => elem);;
     const removedIds = prvImageIds?.filter(
       (item: any) => !newImageIds.includes(item)
     );
-    console.log("removedIds",removedIds)
+    console.log("removedIds", removedIds)
     await PictureModel.deleteMany({ _id: { $in: removedIds } });
 
-    const newImageNames = newProject?.images?.map(({ before, after }: any) => [before?.pictureId?.image, after?.pictureId?.image])?.flatMap((elem:any)=>elem);;
-    const prvImageNames = project?.images?.map(({ before, after }: any) => [before?.pictureId?.image, after?.pictureId?.image])?.flatMap((elem:any)=>elem);;
+    const newImageNames = newProject?.images?.map(({ before, after }: any) => [before?.pictureId?.image, after?.pictureId?.image])?.flatMap((elem: any) => elem);;
+    const prvImageNames = project?.images?.map(({ before, after }: any) => [before?.pictureId?.image, after?.pictureId?.image])?.flatMap((elem: any) => elem);;
     const removedImageNames = prvImageNames?.filter(
       (item: any) => !newImageNames.includes(item)
     );

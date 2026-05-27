@@ -49,6 +49,10 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
       type: String,
       required: [true, "ArtitectureStyle field is required"],
     },
+    address: {
+      type: String,
+      required: [true, "ArtitectureStyle field is required"],
+    },
     startDate: {
       type: Date,
       required: [true, "start date field is required"],

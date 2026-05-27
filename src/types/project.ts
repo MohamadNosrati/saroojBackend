@@ -24,4 +24,5 @@ export interface IProjectSchema {
   updatedAt: Date;
   images: IBFImage[];
   pictureId: mongoose.Schema.Types.ObjectId;
+  address:string;
 }

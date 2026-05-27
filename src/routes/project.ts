@@ -3,6 +3,7 @@ import {
   createProject,
   deleteProject,
   findProject,
+  findProjectBySlug,
   getAllProjects,
   updateProject,
 } from "../controllers/project.js";
@@ -22,6 +23,7 @@ const projectRouter = express.Router();
 
 projectRouter.get("/", getAllProjects);
 projectRouter.get("/:id", findProject);
+projectRouter.get("/find-by-slug/:slug", findProjectBySlug);
 projectRouter.post(
   "/",
   authentication,
