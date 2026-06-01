@@ -6,11 +6,15 @@ import CategoryModel from "../models/category.js";
 import PictureModel from "../models/picture.js";
 import pictureDeleter, { unlinkFile } from "../tools/pictureDeleter.js";
 import CustomError from "../tools/CustomError.js";
+import { ApiFeatures } from "../tools/apiFeatures.js";
+import type { IProjectSchema } from "../types/project.js";
 
 export const createProject = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     await checkExists(CategoryModel, next, "دسته بندی", req.body?.categoryId);
+    console.log("req is hererrrr")
     const project = await ProjectModel.create(req.body);
+    console.log("project",project)
     res.status(201).json({
       status: 201,
       message: "پروزه با موفقیت صاخته شد.",
@@ -21,13 +25,21 @@ export const createProject = catchAsync(
 
 export const getAllProjects = catchAsync(
   async (req: Request, res: Response) => {
-    const projects = await ProjectModel.find()
+    const query = new ApiFeatures<IProjectSchema>(ProjectModel.find(), req?.query);
+    const projects = await query.filtering().sorting().pagination()
       .populate("pictureId", ["image", "id"])
-      .populate("categoryId", ["title", "id"]);
+      .populate("categoryId", ["title", "id"]).execute();
+
+    const totalCount = await new ApiFeatures<IProjectSchema>(ProjectModel.find(), req?.query).filtering().getTotalCount();
+    const totalPages = Math.ceil(totalCount/ (Number(req?.query?.limit) | 9));
     res.status(200).json({
       status: 200,
       message: "لیست پروزه ها با موفقیت دریافت شد.",
-      data: projects,
+      data: {
+        result: projects,
+        totalCount: totalCount,
+        totalPages:totalPages
+      },
     });
   }
 );
@@ -50,7 +62,6 @@ export const findProject = catchAsync(
 
 export const findProjectBySlug = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log("test", req?.params?.slug)
     const project = await ProjectModel.findOne({ title: decodeURIComponent(req.params?.slug?.trim() as string) });
     if (!project) {
       return next(new CustomError(400, "پروژه ای با این نام وجود ندارد."))
@@ -111,12 +122,12 @@ export const updateProject = catchAsync(
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"]);
-    if (newProject?.pictureId.id !== project?.pictureId.id) {
+    if (newProject?.pictureId.id?.toString() !== project?.pictureId.id?.toString()) {
       await pictureDeleter(project?.pictureId.id);
     }
 
-    const newImageIds = newProject?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem: any) => elem);
-    const prvImageIds = project?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem: any) => elem);;
+    const newImageIds = newProject?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem: any) => elem?.toString());
+    const prvImageIds = project?.images?.map(({ before, after }: any) => [before?.pictureId?.id, after?.pictureId?.id])?.flatMap((elem: any) => elem?.toString());;
     const removedIds = prvImageIds?.filter(
       (item: any) => !newImageIds.includes(item)
     );

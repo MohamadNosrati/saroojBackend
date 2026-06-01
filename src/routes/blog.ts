@@ -6,6 +6,7 @@ import {
   createBlog,
   deleteBlog,
   findBlog,
+  findBlogBySlug,
   getAllBlogs,
   updateBlog,
 } from "../controllers/blog.js";
@@ -19,6 +20,7 @@ const blogRouter = express.Router();
 
 blogRouter.get("/", getAllBlogs);
 blogRouter.get("/:id", authentication, authorization(["admin"]), findBlog);
+blogRouter.get("/find-by-slug/:slug", findBlogBySlug);
 blogRouter.post(
   "/",
   authentication,

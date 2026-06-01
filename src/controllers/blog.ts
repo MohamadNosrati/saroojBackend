@@ -3,31 +3,32 @@ import catchAsync from "../tools/catchAsync.js";
 import checkExists from "../tools/checkExsits.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
 import BlogModel from "../models/blog.js";
+import CustomError from "../tools/CustomError.js";
 
 export const createBlog = catchAsync(async (req: Request, res: Response) => {
-  const category = await BlogModel.create(req.body);
+  const blog = await BlogModel.create(req.body);
   res.status(201).json({
     status: 201,
     message: "مقاله با موفقیت صاخته شد.",
-    data: category,
+    data: blog,
   });
 });
 
 export const getAllBlogs = catchAsync(async (req: Request, res: Response) => {
-  const categories = await BlogModel.find().populate("pictureId", [
+  const blogs = await BlogModel.find().populate("pictureId", [
     "image",
     "id",
   ]);
   res.status(200).json({
     status: 200,
     message: "لیست مقالات با موفقیت دریافت شد.",
-    data: categories,
+    data: blogs,
   });
 });
 
 export const findBlog = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const category = await checkExists(
+    const blog = await checkExists(
       BlogModel,
       next,
       "مقاله",
@@ -38,9 +39,25 @@ export const findBlog = catchAsync(
     res.status(201).json({
       status: 201,
       message: "اسلایدر با موفقیت دریافت شد",
-      data: category,
+      data: blog,
     });
   },
+);
+
+export const findBlogBySlug = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const blog = await BlogModel.findOne({ title: decodeURIComponent(req.params?.slug?.trim() as string) });
+    if (!blog) {
+      return next(new CustomError(400, "مقاله ای با این نام وجود ندارد."))
+    }
+    const blogWithImage = await BlogModel.findById(blog?.id)
+      .populate("pictureId", ["image", "id"])
+    res.status(200).json({
+      status: 200,
+      message: "مقاله با موفقیت دریافت شد",
+      data: blogWithImage,
+    });
+  }
 );
 
 export const deleteBlog = catchAsync(
@@ -56,13 +73,14 @@ export const deleteBlog = catchAsync(
 
 export const updateBlog = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const category = await checkExists(
+    const blog = await checkExists(
       BlogModel,
       next,
       "مقاله",
       req.params?.id,
+
     );
-    const newCategory = await BlogModel.findByIdAndUpdate(
+    const newBlog = await BlogModel.findByIdAndUpdate(
       req?.params?.id,
       { $set: req?.body },
       {
@@ -70,13 +88,15 @@ export const updateBlog = catchAsync(
         runValidators: true,
       },
     );
-    if (category?.pictureId !== newCategory?.pictureId) {
-      await pictureDeleter(category?.pictureId);
+    if (blog?.pictureId?.toString() !== newBlog?.pictureId?.toString()) {
+      console.log("newBlog", newBlog?.pictureId)
+      console.log("old", blog?.pictureId)
+      await pictureDeleter(blog?.pictureId);
     }
     res.status(201).json({
       status: 201,
       message: "مقاله با موفقیت به روز رسانی شد.",
-      data: newCategory,
+      data: newBlog,
     });
   },
 );

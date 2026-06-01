@@ -13,7 +13,7 @@ const validator = createValidator({
 const pictureRouter = express.Router();
 
 pictureRouter.get("/:id",findPicture)
-pictureRouter.post("/upload",authentication,authorization(["admin"]),validator.body(pictureSchema),Multer.array("images",2),uploadPicture);
+pictureRouter.post("/upload",authentication,authorization(["admin"]),validator.body(pictureSchema),Multer.single("image"),uploadPicture);
 pictureRouter.delete("/delete",authentication,authorization(["admin"]),deletePicture);
 
 export default pictureRouter;

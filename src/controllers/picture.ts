@@ -6,21 +6,20 @@ import checkExists from "../tools/checkExsits.js";
 
 export const uploadPicture = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log("res is here");
-    if (!req.files) {
-      return next(new CustomError(400, "images cant be undefind"));
+    console.log("files", req?.file);
+    if (!req.file) {
+      return next(new CustomError(400, "image cant be undefind"));
     }
-    const files = req.files as Express.Multer.File[];
-    const data = files?.map((item) => ({
-      image: item.filename,
-    }));
-    const pictures = await PictureModel.create(data);
+    const file = req.file as Express.Multer.File;
+    const pictures = await PictureModel.create({
+      image: file?.filename,
+    });
     res.status(201).json({
       status: 201,
       message: "files uploaded successfully!",
       data: pictures,
     });
-  }
+  },
 );
 
 export const findPicture = catchAsync(
@@ -29,16 +28,16 @@ export const findPicture = catchAsync(
       PictureModel,
       next,
       "تصویر",
-      req.params?.id
+      req.params?.id,
     );
     res.status(200).json({
       status: 200,
       message: "file found successfully!",
       data: pciture,
     });
-  }
+  },
 );
 
 export const deletePicture = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {}
+  async (req: Request, res: Response, next: NextFunction) => {},
 );

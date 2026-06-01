@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 interface IImage {
   name: string;
@@ -14,7 +14,7 @@ export interface IProjectSchema {
   title: string;
   description: string;
   area: number;
-  alt:string;
+  alt: string;
   artitectureStyle: string;
   categoryId: mongoose.Schema.Types.ObjectId;
   isActive: boolean;
@@ -24,5 +24,5 @@ export interface IProjectSchema {
   updatedAt: Date;
   images: IBFImage[];
   pictureId: mongoose.Schema.Types.ObjectId;
-  address:string;
+  address: string;
 }

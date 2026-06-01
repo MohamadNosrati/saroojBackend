@@ -69,7 +69,7 @@ export const updateCategory = catchAsync(
         runValidators: true,
       }
     );
-    if(category?.pictureId !== newCategory?.pictureId){
+    if(category?.pictureId?.toString() !== newCategory?.pictureId?.toString()){
        await pictureDeleter(category?.pictureId)
     }
     res.status(201).json({

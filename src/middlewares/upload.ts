@@ -9,7 +9,6 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ) => {
-  console.log("req is here",req)
   if (file?.size > Number(process.env.MAXFILESIZE) * 1000000) {
     cb(null, false);
     cb(
@@ -19,7 +18,6 @@ const fileFilter = (
       )
     );
   }
-  console.log(file.mimetype);
   const mimeType = file?.mimetype.split("/");
   if (
     mimeType[0] !== "image" ||

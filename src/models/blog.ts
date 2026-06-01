@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import idPlugin from "../tools/idPlugin.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
-import type { ISliderSchema } from "../types/slider.js";
-const blogSchema = new mongoose.Schema<ISliderSchema>(
+import type { IBlogSchema } from "../types/blog.js";
+const blogSchema = new mongoose.Schema<IBlogSchema>(
   {
     title: {
       type: String,
