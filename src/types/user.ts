@@ -8,4 +8,5 @@ export interface IUser {
     userName:string;
     email:string;
     role : TUserRole;
+    pictureId?:string;    
 }

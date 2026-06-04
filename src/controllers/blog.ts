@@ -4,8 +4,12 @@ import checkExists from "../tools/checkExsits.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
 import BlogModel from "../models/blog.js";
 import CustomError from "../tools/CustomError.js";
+import { ApiFeatures } from "../tools/apiFeatures.js";
+import type { IBlogSchema } from "../types/blog.js";
+import { checkUnique } from "../tools/checkUnique.js";
 
-export const createBlog = catchAsync(async (req: Request, res: Response) => {
+export const createBlog = catchAsync(async (req: Request, res: Response,next) => {
+  await checkUnique(BlogModel,next,"title",req?.body?.title,"مقاله")
   const blog = await BlogModel.create(req.body);
   res.status(201).json({
     status: 201,
@@ -15,16 +19,34 @@ export const createBlog = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getAllBlogs = catchAsync(async (req: Request, res: Response) => {
-  const blogs = await BlogModel.find().populate("pictureId", [
-    "image",
-    "id",
-  ]);
+  console.log("params",req?.query)
+  const query = new ApiFeatures<IBlogSchema>(BlogModel.find(), req?.query);
+  const blogs = await query.filtering().sorting().pagination()
+    .populate("pictureId", ["image", "id"]).execute();
+  const totalCount = await new ApiFeatures<IBlogSchema>(BlogModel.find(), req?.query).filtering().getTotalCount();
+  const totalPages = req?.query?.limit ? Math.ceil(totalCount / (Number(req?.query?.limit))) : 1;
+
   res.status(200).json({
     status: 200,
     message: "لیست مقالات با موفقیت دریافت شد.",
-    data: blogs,
+    data: {
+      result: blogs,
+      totalCount: totalCount,
+      totalPages: totalPages
+    },
   });
 });
+
+export const getAllSlugs = catchAsync(
+  async (req: Request, res: Response) => {
+    const projects = await BlogModel.find().select(["id","title"])?.limit(40);
+    res.status(200).json({
+      status: 200,
+      message: "لیست پروزه ها با موفقیت دریافت شد.",
+      data: projects,
+    });
+  }
+);
 
 export const findBlog = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

@@ -8,13 +8,14 @@ import pictureDeleter, { unlinkFile } from "../tools/pictureDeleter.js";
 import CustomError from "../tools/CustomError.js";
 import { ApiFeatures } from "../tools/apiFeatures.js";
 import type { IProjectSchema } from "../types/project.js";
+import { checkUnique } from "../tools/checkUnique.js";
 
 export const createProject = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    await checkUnique(ProjectModel,next,"title",req?.body?.title,"پروژه")
     await checkExists(CategoryModel, next, "دسته بندی", req.body?.categoryId);
-    console.log("req is hererrrr")
     const project = await ProjectModel.create(req.body);
-    console.log("project",project)
+    console.log("project", project)
     res.status(201).json({
       status: 201,
       message: "پروزه با موفقیت صاخته شد.",
@@ -31,15 +32,27 @@ export const getAllProjects = catchAsync(
       .populate("categoryId", ["title", "id"]).execute();
 
     const totalCount = await new ApiFeatures<IProjectSchema>(ProjectModel.find(), req?.query).filtering().getTotalCount();
-    const totalPages = Math.ceil(totalCount/ (Number(req?.query?.limit) | 9));
+    const totalPages = req?.query?.limit ? Math.ceil(totalCount / (Number(req?.query?.limit))) : 1;
     res.status(200).json({
       status: 200,
       message: "لیست پروزه ها با موفقیت دریافت شد.",
       data: {
         result: projects,
         totalCount: totalCount,
-        totalPages:totalPages
+        totalPages: totalPages
       },
+    });
+  }
+);
+
+export const getAllSlugs = catchAsync(
+  async (req: Request, res: Response) => {
+    const projects = await ProjectModel.find().select(["id","title"])?.limit(40);
+    console.log("projectIds", projects)
+    res.status(200).json({
+      status: 200,
+      message: "لیست پروزه ها با موفقیت دریافت شد.",
+      data: projects,
     });
   }
 );

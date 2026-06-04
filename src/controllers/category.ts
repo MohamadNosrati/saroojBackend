@@ -3,6 +3,7 @@ import catchAsync from "../tools/catchAsync.js";
 import CategoryModel from "../models/category.js";
 import checkExists from "../tools/checkExsits.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
+import { checkUnique } from "../tools/checkUnique.js";
 
 export const createCategory = catchAsync(
   async (req: Request, res: Response) => {
@@ -49,7 +50,7 @@ export const findCategory = catchAsync(
 
 export const deleteCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    await checkExists(CategoryModel, next,"دسته بندی", req.params?.id);
+    await checkExists(CategoryModel, next, "دسته بندی", req.params?.id);
     await CategoryModel.findByIdAndDelete(req.params?.id);
     res.status(201).json({
       status: 201,
@@ -60,7 +61,8 @@ export const deleteCategory = catchAsync(
 
 export const updateCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const category =await checkExists(CategoryModel, next,"دسته بندی", req.params?.id);
+    const category = await checkExists(CategoryModel, next, "دسته بندی", req.params?.id);
+    await checkUnique(CategoryModel, next, "title", req?.body?.title, "دسته بندی")
     const newCategory = await CategoryModel.findByIdAndUpdate(
       req?.params?.id,
       { $set: req?.body },
@@ -69,8 +71,8 @@ export const updateCategory = catchAsync(
         runValidators: true,
       }
     );
-    if(category?.pictureId?.toString() !== newCategory?.pictureId?.toString()){
-       await pictureDeleter(category?.pictureId)
+    if (category?.pictureId?.toString() !== newCategory?.pictureId?.toString()) {
+      await pictureDeleter(category?.pictureId)
     }
     res.status(201).json({
       status: 201,

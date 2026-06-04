@@ -13,7 +13,7 @@ export class ApiFeatures<T> {
 
     filtering() {
         const queryObj = { ...this.queryString };
-        const excludedFields = ['page', 'sort', 'limit', 'fields'];
+        const excludedFields = ['page', 'sort', 'limit', 'fields','asc'];
         excludedFields.forEach(el => delete queryObj[el]);
 
         let queryStr = JSON.stringify(queryObj);
@@ -25,10 +25,11 @@ export class ApiFeatures<T> {
 
     sorting() {
         if (this.queryString.sort) {
-            const sortBy = (this.queryString.sort as string).split(',').join(' ');
-            this.query = this.query.sort(sortBy);
+            const isDesc = this.queryString?.asc === "false";
+            console.log("isAsc",isDesc) 
+            this.query = this.query.sort(isDesc ? `-${this.queryString.sort}` : this.queryString.sort);
         } else {
-            this.query = this.query.sort('-createdAt');
+            this.query = this.query.sort('createdAt');
         }
         return this;
     }

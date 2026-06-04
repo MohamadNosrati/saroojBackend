@@ -17,6 +17,10 @@ export const createSliderBodySchema = Joi.object({
     "string.base": "pictureId must be of type string!",
     "any.required": "pictureId field is required!",
   }),
+  mobilePictureId: Joi.string().required().messages({
+    "string.base": "pictureId must be of type string!",
+    "any.required": "pictureId field is required!",
+  }),
   isActive: Joi.bool().messages({
     "bool.base": "is Active field must be of type boolean",
   }),
@@ -37,6 +41,9 @@ export const updateSliderBodySchema = Joi.object({
     "string.base": "description must be of type string!",
   }),
   pictureId: Joi.string().messages({
+    "string.base": "pictureId must be of type string!",
+  }),
+  mobilePictureId: Joi.string().messages({
     "string.base": "pictureId must be of type string!",
   }),
   isActive: Joi.bool().messages({

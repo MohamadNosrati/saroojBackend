@@ -31,6 +31,7 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
     title: {
       type: String,
       required: [true, "title field is required"],
+      unique: [true, "title field is unique"],
       lowercase: true,
     },
     description: {

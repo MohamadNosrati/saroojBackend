@@ -8,9 +8,13 @@ import {
   findBlog,
   findBlogBySlug,
   getAllBlogs,
+  getAllSlugs,
   updateBlog,
 } from "../controllers/blog.js";
-import { createBlogBodySchema, updateBlogBodySchema } from "../validators/blog.js";
+import {
+  createBlogBodySchema,
+  updateBlogBodySchema,
+} from "../validators/blog.js";
 
 const validator = createValidator({
   passError: true,
@@ -19,6 +23,7 @@ const validator = createValidator({
 const blogRouter = express.Router();
 
 blogRouter.get("/", getAllBlogs);
+blogRouter.get("/get-all-slugs", getAllSlugs);
 blogRouter.get("/:id", authentication, authorization(["admin"]), findBlog);
 blogRouter.get("/find-by-slug/:slug", findBlogBySlug);
 blogRouter.post(
@@ -28,12 +33,7 @@ blogRouter.post(
   validator.body(createBlogBodySchema),
   createBlog,
 );
-blogRouter.delete(
-  "/:id",
-  authentication,
-  authorization(["admin"]),
-  deleteBlog,
-);
+blogRouter.delete("/:id", authentication, authorization(["admin"]), deleteBlog);
 blogRouter.patch(
   "/:id",
   authentication,

@@ -5,6 +5,7 @@ import {
   findProject,
   findProjectBySlug,
   getAllProjects,
+  getAllSlugs,
   updateProject,
 } from "../controllers/project.js";
 import authentication from "../middlewares/authenction.js";
@@ -22,6 +23,7 @@ const validator = createValidator({
 const projectRouter = express.Router();
 
 projectRouter.get("/", getAllProjects);
+projectRouter.get("/get-all-slugs", getAllSlugs);
 projectRouter.get("/:id", findProject);
 projectRouter.get("/find-by-slug/:slug", findProjectBySlug);
 projectRouter.post(

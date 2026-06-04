@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema<IUser>(
       min: [4, "userName minLenght 4 character!"],
       max: [40, "userName maxLenght 40 character!"],
     },
+    pictureId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Picture",
+    },
     role: {
       type: String,
       default: "admin",
@@ -35,7 +39,7 @@ const userSchema = new mongoose.Schema<IUser>(
   {
     versionKey: false,
     timestamps: true,
-  }
+  },
 );
 
 userSchema.pre("save", async function (next) {

@@ -5,6 +5,7 @@ export interface ISliderSchema {
     description:string;
     isActive:boolean;
     pictureId:mongoose.Schema.Types.ObjectId;
+    mobilePictureId:mongoose.Schema.Types.ObjectId;
     alt:string;
     createdAt:Date;
     updatedAt:Date;
