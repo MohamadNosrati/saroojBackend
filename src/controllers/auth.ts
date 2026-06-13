@@ -36,7 +36,7 @@ export const signup = catchAsync(
 
 export const signin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = await UserModel.findOne({ email: req.body.email });
+    const user = await UserModel.findOne({ email: req.body.email }).populate("pictureId",["image","id"]);
     if (!user) {
       return next(new CustomError(400, "no user with this email or password!"));
     }
@@ -61,7 +61,7 @@ export const signin = catchAsync(
 
 export const getMe = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = await UserModel.findOne({ email: req.body.email });
+    const user = await UserModel.findOne({ email: req.body.email }).populate("pictureId",["image","id"]);
     if (!user) {
       return next(new CustomError(400, "no user with this email or password!"));
     }

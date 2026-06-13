@@ -13,7 +13,7 @@ export class ApiFeatures<T> {
 
     filtering() {
         const queryObj = { ...this.queryString };
-        const excludedFields = ['page', 'sort', 'limit', 'fields','asc'];
+        const excludedFields = ['page', 'sort', 'limit', 'fields', 'asc'];
         excludedFields.forEach(el => delete queryObj[el]);
 
         let queryStr = JSON.stringify(queryObj);
@@ -26,7 +26,7 @@ export class ApiFeatures<T> {
     sorting() {
         if (this.queryString.sort) {
             const isDesc = this.queryString?.asc === "false";
-            console.log("isAsc",isDesc) 
+            console.log("isAsc", isDesc)
             this.query = this.query.sort(isDesc ? `-${this.queryString.sort}` : this.queryString.sort);
         } else {
             this.query = this.query.sort('createdAt');
@@ -44,11 +44,23 @@ export class ApiFeatures<T> {
         return this;
     }
 
-    populate(path: string, select?: string[]): this {
-        if (select) {
-            this.query = this.query.populate(path, select);
+    populate(path: string, select: string[], nested?: {
+        path: string;
+        select: string[];
+    }): this {
+        if (nested) {
+            this.query = this.query.populate([
+                {
+                    path: path,
+                    select: select,
+                    populate: {
+                        path: nested?.path as string,
+                        select: nested?.select as string[]
+                    }
+                }
+            ]);
         } else {
-            this.query = this.query.populate(path);
+            this.query = this.query.populate(path, select);
         }
         return this;
     }

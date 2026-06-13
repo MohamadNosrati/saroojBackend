@@ -15,6 +15,8 @@ import blogRouter from "./routes/blog.js";
 import userRouter from "./routes/user.js";
 import subscriptionRouter from "./routes/subscription.js";
 import notificationRouter from "./routes/notification.js";
+import conversationRouter from "./routes/conversation.js";
+import messagesRouter from "./routes/message.js";
 
 dotenv.config();
 const app = express();
@@ -22,8 +24,6 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-
-console.log("ennnnn",process.env.PORT)
 
 /// app routes
 
@@ -39,6 +39,8 @@ app.use("/pictures", pictureRouter);
 app.use("/users", userRouter);
 app.use("/subscriptions", subscriptionRouter);
 app.use("/notifications", notificationRouter);
+app.use("/conversations", conversationRouter);
+app.use("/messages", messagesRouter);
 
 app.use(notFoundErrorHandler);
 app.use(globalErrorHandler);

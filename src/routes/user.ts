@@ -3,7 +3,7 @@ import { createValidator } from "express-joi-validation";
 import authentication from "../middlewares/authenction.js";
 import authorization from "../middlewares/authorization.js";
 import { updateUserBody } from "../validators/user.js";
-import { updateUser } from "../controllers/user.js";
+import { getAllUsers, updateUser } from "../controllers/user.js";
 
 
 const validator = createValidator({
@@ -12,6 +12,13 @@ const validator = createValidator({
 
 const userRouter = express.Router();
 
+
+userRouter.get(
+  "/",
+  authentication,
+  authorization(["admin"]),
+  getAllUsers
+);
 
 userRouter.patch(
   "/:id",
