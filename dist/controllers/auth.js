@@ -25,7 +25,26 @@ export const signup = catchAsync(async (req, res, next) => {
     });
 });
 export const signin = catchAsync(async (req, res, next) => {
-    const user = await UserModel.findOne({ email: req.body.email });
+    const user = await UserModel.findOne({ email: req.body.email }).populate("pictureId", ["image", "id"]);
+    if (!user) {
+        return next(new CustomError(400, "no user with this email or password!"));
+    }
+    const passwordCorrect = await bcrypt.compare(req.body.password, user?.password);
+    if (!passwordCorrect) {
+        return next(new CustomError(400, "no user with this email or password!"));
+    }
+    const token = tokenGenerator(user?.id);
+    res.status(200).json({
+        status: 200,
+        message: `user singd in successfully!`,
+        data: {
+            user: user,
+            token: token,
+        },
+    });
+});
+export const getMe = catchAsync(async (req, res, next) => {
+    const user = await UserModel.findOne({ email: req.body.email }).populate("pictureId", ["image", "id"]);
     if (!user) {
         return next(new CustomError(400, "no user with this email or password!"));
     }

@@ -12,7 +12,7 @@ import { checkUnique } from "../tools/checkUnique.js";
 
 export const createProject = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    await checkUnique(ProjectModel,next,"title",req?.body?.title,"پروژه")
+    await checkUnique(ProjectModel, next, "title", req?.body?.title, "پروژه")
     await checkExists(CategoryModel, next, "دسته بندی", req.body?.categoryId);
     const project = await ProjectModel.create(req.body);
     console.log("project", project)
@@ -47,7 +47,7 @@ export const getAllProjects = catchAsync(
 
 export const getAllSlugs = catchAsync(
   async (req: Request, res: Response) => {
-    const projects = await ProjectModel.find().select(["id","title"])?.limit(40);
+    const projects = await ProjectModel.find().select(["id", "title"])?.limit(40);
     console.log("projectIds", projects)
     res.status(200).json({
       status: 200,
@@ -84,11 +84,27 @@ export const findProjectBySlug = catchAsync(
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"]);
+
+
+
+    const suggestions = await ProjectModel.find({
+      categoryId: project?.categoryId,
+      _id: { $ne: project?.id }
+    })
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .populate("pictureId", ["image", "id"])
+      .lean(); 
     res.status(200).json({
       status: 200,
       message: "پروژه با موفقیت دریافت شد",
-      data: projectWithImages,
+      data: {
+        project: projectWithImages,
+        suggestions: suggestions
+      },
     });
+
+
   }
 );
 

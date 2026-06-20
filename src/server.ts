@@ -18,7 +18,7 @@ webpush.setVapidDetails(
 );
 
 mongoose
-  .connect("mongodb://localhost:27017/sarooj")
+  .connect(process.env.DATABASECONNECTION  || "mongodb://localhost:27017/sarooj")
   .then(() => {
     console.log("mongoose connected!");
   })
@@ -69,6 +69,6 @@ io.on(eventNames.connection, (socket: Socket) => {
   });
 });
 
-httpServer.listen(8000, () => {
-  console.log(`server listening on port ${8000}`);
+httpServer.listen(Number(process.env.PORT), () => {
+  console.log(`server listening on port ${Number(process.env.PORT)}`);
 });

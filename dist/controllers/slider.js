@@ -3,30 +3,33 @@ import checkExists from "../tools/checkExsits.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
 import SliderModel from "../models/slider.js";
 export const createSlider = catchAsync(async (req, res) => {
-    const category = await SliderModel.create(req.body);
+    const slider = await SliderModel.create(req.body);
     res.status(201).json({
         status: 201,
         message: "اسلایدر با موفقیت صاخته شد.",
-        data: category,
+        data: slider,
     });
 });
 export const getAllSliders = catchAsync(async (req, res) => {
-    const categories = await SliderModel.find().populate("pictureId", [
-        "image",
-        "id",
-    ]);
+    const sliders = await SliderModel.find()
+        .populate("pictureId", ["image", "id"])
+        .populate("mobilePictureId", ["image", "id"]);
     res.status(200).json({
         status: 200,
         message: "لیست اسلایدر ها با موفقیت دریافت شد.",
-        data: categories,
+        data: sliders,
     });
 });
 export const findSlider = catchAsync(async (req, res, next) => {
-    const category = await checkExists(SliderModel, next, "اسلایدر", req.params?.id, "pictureId", ["image", "id"]);
+    await checkExists(SliderModel, next, "اسلایدر", req.params?.id);
+    const slider = await SliderModel.findById(req?.params?.id)
+        ?.populate("pictureId", ["image", "id"])
+        ?.populate("mobilePictureId", ["image", "id"]);
+    console.log("slider", slider);
     res.status(201).json({
         status: 201,
         message: "اسلایدر با موفقیت دریافت شد",
-        data: category,
+        data: slider,
     });
 });
 export const deleteSlider = catchAsync(async (req, res, next) => {
@@ -38,18 +41,21 @@ export const deleteSlider = catchAsync(async (req, res, next) => {
     });
 });
 export const updateSlider = catchAsync(async (req, res, next) => {
-    const category = await checkExists(SliderModel, next, "اسلایدر", req.params?.id);
-    const newCategory = await SliderModel.findByIdAndUpdate(req?.params?.id, { $set: req?.body }, {
+    const slider = await checkExists(SliderModel, next, "اسلایدر", req.params?.id);
+    const newSlider = await SliderModel.findByIdAndUpdate(req?.params?.id, { $set: req?.body }, {
         new: true,
         runValidators: true,
     });
-    if (category?.pictureId !== newCategory?.pictureId) {
-        await pictureDeleter(category?.pictureId);
+    if (slider?.pictureId?.toString() !== newSlider?.pictureId?.toString()) {
+        await pictureDeleter(slider?.pictureId);
+    }
+    if (slider?.mobilePictureId?.toString() !== newSlider?.mobilePictureId?.toString()) {
+        await pictureDeleter(slider?.mobilePictureId);
     }
     res.status(201).json({
         status: 201,
         message: "اسلایدر با موفقیت به روز رسانی شد.",
-        data: newCategory,
+        data: newSlider,
     });
 });
 //# sourceMappingURL=slider.js.map

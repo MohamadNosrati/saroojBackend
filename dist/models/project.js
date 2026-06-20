@@ -2,28 +2,32 @@ import mongoose from "mongoose";
 import idPlugin from "../tools/idPlugin.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
 const beforeAfterSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, "image name is required!"],
-    },
-    type: {
-        type: String,
-        required: [true, "image type is required!"],
-        enum: {
-            values: ["before", "after"],
-            message: "image type can only be before or after",
+    before: {
+        name: {
+            type: String,
+            required: [true, "before image name is required!"],
+        },
+        pictureId: {
+            type: mongoose.Types.ObjectId,
+            required: [true, "before image PictureId is required!"],
+            ref: "Picture",
         },
     },
-    pictureId: {
-        type: mongoose.Types.ObjectId,
-        required: [true, "image PictureId is required!"],
-        ref: "Picture",
+    after: {
+        name: {
+            type: String,
+        },
+        pictureId: {
+            type: mongoose.Types.ObjectId,
+            ref: "Picture",
+        },
     },
 });
 const projectSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, "title field is required"],
+        unique: [true, "title field is unique"],
         lowercase: true,
     },
     description: {
@@ -35,6 +39,14 @@ const projectSchema = new mongoose.Schema({
         required: [true, "area field is required"],
     },
     artitectureStyle: {
+        type: String,
+        required: [true, "ArtitectureStyle field is required"],
+    },
+    alt: {
+        type: String,
+        required: [true, "ArtitectureStyle field is required"],
+    },
+    address: {
         type: String,
         required: [true, "ArtitectureStyle field is required"],
     },

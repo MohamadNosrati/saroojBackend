@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
         min: [4, "userName minLenght 4 character!"],
         max: [40, "userName maxLenght 40 character!"],
     },
+    pictureId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Picture",
+    },
     role: {
         type: String,
         default: "admin",

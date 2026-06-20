@@ -1,1 +1,1 @@
-{"version":3,"file":"slider.d.ts","sourceRoot":"","sources":["../../src/validators/slider.ts"],"names":[],"mappings":"AAAA,OAAO,GAAG,MAAM,KAAK,CAAC;AAEtB,eAAO,MAAM,sBAAsB,uBAwBjC,CAAC;AAEH,eAAO,MAAM,sBAAsB,uBAmBjC,CAAC"}
+{"version":3,"file":"slider.d.ts","sourceRoot":"","sources":["../../src/validators/slider.ts"],"names":[],"mappings":"AAAA,OAAO,GAAG,MAAM,KAAK,CAAC;AAEtB,eAAO,MAAM,sBAAsB,uBA4BjC,CAAC;AAEH,eAAO,MAAM,sBAAsB,uBAsBjC,CAAC"}

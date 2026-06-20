@@ -1,7 +1,26 @@
-FROM node:latest
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-RUN npm install
+COPY package*.json ./
+RUN npm ci
 
-CMD ["npm","start"]
+COPY . .
+
+RUN npm run build
+
+
+FROM node:22-alpine
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 5000
+
+CMD ["node", "dist/server.js"]

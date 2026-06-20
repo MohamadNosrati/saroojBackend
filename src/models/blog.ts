@@ -26,6 +26,10 @@ const blogSchema = new mongoose.Schema<IBlogSchema>(
       type: mongoose.Types.ObjectId,
       ref: "Picture",
     },
+    userId: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,

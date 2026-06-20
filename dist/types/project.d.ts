@@ -1,14 +1,17 @@
 import mongoose from "mongoose";
-type IImageType = "before" | "after";
 interface IImage {
     name: string;
-    type: IImageType;
     pictureId: mongoose.Schema.Types.ObjectId;
+}
+interface IBFImage {
+    before: IImage;
+    after?: IImage;
 }
 export interface IProjectSchema {
     title: string;
     description: string;
     area: number;
+    alt: string;
     artitectureStyle: string;
     categoryId: mongoose.Schema.Types.ObjectId;
     isActive: boolean;
@@ -16,8 +19,9 @@ export interface IProjectSchema {
     endDate?: Date;
     createdAt: Date;
     updatedAt: Date;
-    images: IImage[];
+    images: IBFImage[];
     pictureId: mongoose.Schema.Types.ObjectId;
+    address: string;
 }
 export {};
 //# sourceMappingURL=project.d.ts.map

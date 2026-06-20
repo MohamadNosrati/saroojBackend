@@ -9,4 +9,5 @@ export interface IBlogSchema {
     createdAt:Date;
     updatedAt:Date;
     link:string;
+    userId:mongoose.Schema.Types.ObjectId;
 }

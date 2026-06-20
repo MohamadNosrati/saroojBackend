@@ -43,7 +43,7 @@ export const updateTeamate = catchAsync(async (req, res, next) => {
         new: true,
         runValidators: true,
     });
-    if (teamate?.pictureId !== newTeamte?.pictureId) {
+    if (teamate?.pictureId?.toString() !== newTeamte?.pictureId?.toString()) {
         pictureDeleter(teamate?.pictureId);
     }
     res.status(201).json({

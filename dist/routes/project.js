@@ -1,5 +1,5 @@
 import express from "express";
-import { createProject, deleteProject, findProject, getAllProjects, updateProject, } from "../controllers/project.js";
+import { createProject, deleteProject, findProject, findProjectBySlug, getAllProjects, getAllSlugs, updateProject, } from "../controllers/project.js";
 import authentication from "../middlewares/authenction.js";
 import authorization from "../middlewares/authorization.js";
 import { createValidator } from "express-joi-validation";
@@ -9,7 +9,9 @@ const validator = createValidator({
 });
 const projectRouter = express.Router();
 projectRouter.get("/", getAllProjects);
+projectRouter.get("/get-all-slugs", getAllSlugs);
 projectRouter.get("/:id", findProject);
+projectRouter.get("/find-by-slug/:slug", findProjectBySlug);
 projectRouter.post("/", authentication, authorization(["admin"]), validator.body(createProjectBodySchema), createProject);
 projectRouter.delete("/:id", authentication, authorization(["admin"]), deleteProject);
 projectRouter.patch("/:id", authentication, authorization(["admin"]), validator.body(updateProjectBodySchema), updateProject);

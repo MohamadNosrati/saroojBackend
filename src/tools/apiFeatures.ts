@@ -47,7 +47,7 @@ export class ApiFeatures<T> {
     populate(path: string, select: string[], nested?: {
         path: string;
         select: string[];
-    }): this {
+    }) {
         if (nested) {
             this.query = this.query.populate([
                 {
@@ -76,5 +76,7 @@ export class ApiFeatures<T> {
     execute(): Promise<T[]> {
         return this.query;
     }
+
+
 
 }

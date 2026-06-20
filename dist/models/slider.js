@@ -6,11 +6,11 @@ const sliderSchema = new mongoose.Schema({
         type: String,
         required: [true, "title field is required"],
         lowercase: true,
-        unique: [true, "title filed must be unique!"]
+        unique: [true, "title filed must be unique!"],
     },
     link: {
         type: String,
-        required: [true, "title field is required"]
+        required: [true, "title field is required"],
     },
     alt: {
         type: String,
@@ -28,6 +28,10 @@ const sliderSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Picture",
     },
+    mobilePictureId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Picture",
+    },
 }, {
     timestamps: true,
     versionKey: false,
@@ -38,6 +42,7 @@ sliderSchema.pre("findOneAndDelete", async function (next) {
     const doc = await this.model.findOne(filter);
     if (doc) {
         await pictureDeleter(doc?.pictureId);
+        await pictureDeleter(doc?.mobilePictureId);
     }
     next();
 });

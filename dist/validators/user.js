@@ -33,4 +33,10 @@ export const userSigninBody = Joi.object({
         "any.required": "password field is required",
     }),
 });
+export const updateUserBody = Joi.object({
+    pictureId: Joi.string().required().messages({
+        "string.base": "password field be an string",
+        "any.required": "password field is required",
+    }),
+});
 //# sourceMappingURL=user.js.map
