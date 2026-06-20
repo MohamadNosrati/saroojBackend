@@ -1,92 +1,41 @@
-// import OpenAI from "openai";
-// import {  groq } from "../server.js";
+const systemPrompt = `You are a precise Persian-to-English translation assistant. Your job is to translate all values in the provided JSON object from Persian to English.
 
-// const systemMessage = `
-// You are a professional Persian-to-English translator for a MongoDB-based CMS.
+CRITICAL RULES:
+1. Translate the meaning of general text naturally into English.
+2. DO NOT translate names of streets, alleys, avenues, boulevards, cities, or provinces. Instead, transliterate them phonetically into English script using standard conversational English spelling (e.g., change "یزد" to "yazd", "تهران" to "tehran", "خیابان آزادی" to "azadi street").
+3. Preserve the exact structural meaning of the keys, but append "En" to the key names in the output object as requested by the schema.
+4. If the input contains keys other than 'title' and 'description', dynamically apply these same translation and transliteration rules to those keys, and append "En" to their output key names.`;
 
-// Your task is to receive a JavaScript/JSON object and return ONLY a JSON object containing the translated English fields.
+import { GoogleGenAI, Type } from "@google/genai";
 
-// Rules:
+const ai = new GoogleGenAI({
+  apiKey:
+    process.env.GEMINI_API_KEY ||
+    "AQ.Ab8RN6IPNYeG3QBBQKqhQng4Hd8mW2BZtq6FF9tfqK2S7RG7gQ",
+});
 
-// 1. For every Persian field, create a corresponding English field by appending "En" to the original key name.
-//    Examples:
-//    - title → titleEn
-//    - description → descriptionEn
-//    - shortDescription → shortDescriptionEn
+export async function translator(payload: Record<string, string>) {
+  console.log("apiKey", process.env.GEMINI_API_KEY);
+  const response = await ai.models.generateContent({
+    // Best free-tier models: 'gemini-2.5-flash' or 'gemini-3-flash-preview'
+    model: "gemini-2.5-flash",
+    contents: JSON.stringify(payload),
+    config: {
+      systemInstruction: systemPrompt,
 
-// 2. Do NOT return the original Persian fields.
-
-// 3. Ignore and completely exclude any field whose key contains any of the following words (case-insensitive):
-//    - image
-//    - img
-//    - picture
-//    - pictureId
-//    - picturedId
-
-// 4. Preserve the exact object structure for all translatable fields.
-
-// 5. If a value contains HTML, keep ALL HTML tags, attributes, nesting, and formatting exactly unchanged. Translate only the human-readable text inside the HTML.
-//    Example:
-//    Input:
-//    {
-//      "description": "<p>سلام دنیا</p>"
-//    }
-
-//    Output:
-//    {
-//      "descriptionEn": "<p>Hello World</p>"
-//    }
-
-// 6. If a value contains Persian city names, province names, street names, neighborhoods, landmarks, or proper nouns, transliterate them into English instead of translating their meaning.
-//    Examples:
-//    - تهران → Tehran
-//    - خیابان ولیعصر → Valiasr Street
-//    - اصفهان → Isfahan
-
-// 7. Maintain the original meaning, tone, and context. Use natural, professional English.
-
-// 8. Do not add explanations, comments, markdown, code fences, or extra text.
-
-// 9. Return valid JSON only.
-
-// 10. If a field is already in English, copy its content to the corresponding En field without modification.
-
-// Example Input:
-// {
-//   "title": "پروژه تستی",
-//   "description": "<p>این یک پروژه تستی است.</p>",
-//   "mainImage": "abc.jpg"
-// }
-
-// Example Output:
-// {
-//   "titleEn": "Test Project",
-//   "descriptionEn": "<p>This is a test project.</p>"
-// }
-// `;
-
-// const translator = async (input: any) => {
-//   return await groq.chat.completions.create({
-//     messages: [
-//       {
-//         role: "user",
-//         content: "Explain the importance of fast language models",
-//       },
-//     ],
-//     model: "llama-3.1-8b-instant",
-//   });
-// };
-// // const translator = async (input: any) => {
-// //   // return await client.responses.create({
-// //   // model: "deepseek-v4-pro",
-// //   //   instructions: systemMessage,
-// //   //   input: JSON.stringify(input),
-// //   // });
-// //   return await client.responses.create({
-// //     messages: [{ role: "system", content: "You are a helpful assistant." }],
-// //     model: "deepseek-v4-pro",
-// //     reasoning_effort: "high",
-// //   });
-// // };
-
-// export default translator;
+      // Forces the model to reply ONLY in the requested JSON structure
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        description:
+          "Object containing the translated keys with 'En' appended to their original names.",
+        // Tells Gemini it must output string values for dynamically generated keys
+        additionalProperties: {
+          type: Type.STRING,
+        },
+      },
+    },
+  });
+  console.log("Raw response from Gemini:", response);
+  console.log(JSON.parse(response?.text ?? "{}"));
+}
