@@ -5,14 +5,13 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "nodemon --watch \"src/**/*.ts\" --exec tsx src/server.ts",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec tsx src/server.ts",
     "lint": "eslint 'src/**/*.ts'"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@google/genai": "^2.9.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
@@ -26,6 +25,7 @@
     "multer": "^2.0.2",
     "sharp": "^0.34.3",
     "socket.io": "^4.8.3",
+    "socks-proxy-agent": "^10.1.0",
     "web-push": "^3.6.7"
   },
   "devDependencies": {
