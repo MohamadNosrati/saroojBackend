@@ -1,1 +1,0 @@
-{"version":3,"file":"notifcation.d.ts","sourceRoot":"","sources":["../../src/types/notifcation.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,mBAAmB;IAChC,KAAK,EAAE,MAAM,CAAC;IACd,GAAG,EAAE,MAAM,CAAC;IACZ,WAAW,EAAE,MAAM,CAAC;IACpB,SAAS,EAAE,MAAM,CAAC;IAClB,SAAS,EAAE,MAAM,CAAC;CACnB"}
