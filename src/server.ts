@@ -4,7 +4,6 @@ import app from "./app.js";
 import webpush from "web-push";
 import { Server, Socket } from "socket.io";
 import jwt, { type JwtPayload, type VerifyErrors } from "jsonwebtoken";
-import CustomError from "./tools/CustomError.js";
 import { eventNames } from "./config/socket.js";
 import { socketHandlers } from "./socket/eventHandlers.js";
 import { socketManager } from "./socket/manager.js";
@@ -26,7 +25,7 @@ mongoose
 
 export const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTENT_URL,
     credentials: true,
   },
 });

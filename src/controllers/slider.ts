@@ -3,7 +3,7 @@ import catchAsync from "../tools/catchAsync.js";
 import checkExists from "../tools/checkExsits.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
 import SliderModel from "../models/slider.js";
-import { translator } from "../services/translator.js";
+// import { translator } from "../services/translator.js";
 
 export const createSlider = catchAsync(async (req: Request, res: Response) => {
   const slider = await SliderModel.create(req.body);
@@ -15,10 +15,6 @@ export const createSlider = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getAllSliders = catchAsync(async (req: Request, res: Response) => {
-   await translator({
-    title: "اسلایدر",
-    description: "لیست اسلایدر ها با موفقیت دریافت شد.",
-  });
   const sliders = await SliderModel.find()
     .populate("pictureId", ["image", "id"])
     .populate("mobilePictureId", ["image", "id"]);
