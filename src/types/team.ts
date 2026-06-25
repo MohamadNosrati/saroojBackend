@@ -9,4 +9,6 @@ export interface ITeamate {
     createdAt:Date;
     updatedAt:Date;
     alt:string;
+    telegram?:string;
+    instagram?:string;
 }

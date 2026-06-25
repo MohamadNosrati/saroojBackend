@@ -19,6 +19,14 @@ const teamsSchema = new mongoose.Schema<ITeamate>(
       required: [true, "position field is required"],
       lowercase: true,
     },
+    telegram: {
+      type: String,
+      lowercase: true,
+    },
+    instagram: {
+      type: String,
+      lowercase: true,
+    },
     description: {
       type: String,
       required: [true, "description field is required"],

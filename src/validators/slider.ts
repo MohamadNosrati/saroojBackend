@@ -5,9 +5,8 @@ export const createSliderBodySchema = Joi.object({
     "string.base": "title must be of type string!",
     "any.required": "title field is required!",
   }),
-  link: Joi.string().required().messages({
+  link: Joi.string().allow("").required().messages({
     "string.base": "title must be of type string!",
-    "any.required": "title field is required!",
   }),
   description: Joi.string().required().messages({
     "string.base": "description must be of type string!",
@@ -34,7 +33,7 @@ export const updateSliderBodySchema = Joi.object({
   title: Joi.string().messages({
     "string.base": "title must be of type string!",
   }),
-  link: Joi.string().messages({
+  link: Joi.string().allow("").messages({
     "string.base": "title must be of type string!",
   }),
   description: Joi.string().messages({
