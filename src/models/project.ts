@@ -25,6 +25,27 @@ const beforeAfterSchema = new mongoose.Schema({
     },
   },
 });
+const stepSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "before image name is required!"],
+  },
+  pictureId: {
+    type: mongoose.Types.ObjectId,
+    ref: "Picture",
+  },
+  alt: {
+    type: String,
+    required: [true, "before image name is required!"],
+  },
+  isActive: {
+    type: Boolean,
+    default: false,
+  },
+  video: {
+    type: String,
+  },
+});
 
 const projectSchema = new mongoose.Schema<IProjectSchema>(
   {
@@ -76,6 +97,7 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
       ref: "Picture",
     },
     images: [beforeAfterSchema],
+    steps: [stepSchema],
   },
   {
     timestamps: true,

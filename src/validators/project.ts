@@ -10,10 +10,31 @@ const beforeAfterImageSchema = Joi.object({
     "any.required": "pictureId field is required!",
   }),
 });
+const stepsSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "string.base": "name must be of type string!",
+    "any.required": "name field is required!",
+  }),
+  pictureId: Joi.string().required().messages({
+    "string.base": "pictureId must be of type string!",
+    "any.required": "pictureId field is required!",
+  }),
+  description: Joi.string().required().messages({
+    "string.base": "description must be of type string!",
+    "any.required": "description field is required!",
+  }),
+  alt: Joi.string().required().messages({
+    "string.base": "alt must be of type string!",
+    "any.required": "alt field is required!",
+  }),
+  video: Joi.string().required().messages({
+    "string.base": "alt must be of type string!",
+  }),
+});
 
 const pictureSchema = Joi.object({
-  before : beforeAfterImageSchema,
-  after: beforeAfterImageSchema
+  before: beforeAfterImageSchema,
+  after: beforeAfterImageSchema,
 });
 
 export const createProjectBodySchema = Joi.object({
@@ -66,7 +87,10 @@ export const createProjectBodySchema = Joi.object({
     "any.required": "images field is required!",
     "array.base": "images filed must be of type array!",
   }),
-
+  steps: Joi.array().items(stepsSchema).required().messages({
+    "any.required": "images field is required!",
+    "array.base": "images filed must be of type array!",
+  }),
 });
 
 export const updateProjectBodySchema = Joi.object({
@@ -108,5 +132,8 @@ export const updateProjectBodySchema = Joi.object({
   }),
   address: Joi.string().required().messages({
     "string.base": "description must be of type string!",
+  }),
+  steps: Joi.array().items(stepsSchema).required().messages({
+    "array.base": "images filed must be of type array!",
   }),
 });
