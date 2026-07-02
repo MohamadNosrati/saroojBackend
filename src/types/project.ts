@@ -23,7 +23,7 @@ export interface IProjectSchema {
   description: string;
   area: number;
   alt: string;
-  artitectureStyle: string;
+  artitectureStyle?: string;
   categoryId: mongoose.Schema.Types.ObjectId;
   isActive: boolean;
   startDate: Date;
@@ -34,4 +34,5 @@ export interface IProjectSchema {
   pictureId: mongoose.Schema.Types.ObjectId;
   address: string;
   steps: IStep[];
+  video?:string;
 }

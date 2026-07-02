@@ -27,8 +27,11 @@ const stepsSchema = Joi.object({
     "string.base": "alt must be of type string!",
     "any.required": "alt field is required!",
   }),
-  video: Joi.string().required().messages({
+  video: Joi.string().allow("").messages({
     "string.base": "alt must be of type string!",
+  }),
+  isActive: Joi.bool().messages({
+    "bool.base": "is Active field must be of type boolean",
   }),
 });
 
@@ -62,11 +65,10 @@ export const createProjectBodySchema = Joi.object({
     "string.base": "pictureId must be of type string!",
     "any.required": "pictureId field is required!",
   }),
-  artitectureStyle: Joi.string().required().messages({
+  artitectureStyle: Joi.string().allow("").required().messages({
     "string.base": "pictureId must be of type string!",
-    "any.required": "pictureId field is required!",
   }),
-  video: Joi.string().messages({
+  video: Joi.string().allow("").messages({
     "string.base": "video must be of type string!",
   }),
   area: Joi.number().required().messages({
@@ -77,7 +79,7 @@ export const createProjectBodySchema = Joi.object({
     "date.base": "startDate field must be of type date",
     "any.required": "startDate filed is required",
   }),
-  endDate: Joi.date().messages({
+  endDate: Joi.date().allow("").messages({
     "date.base": "endDate field must be of type date",
   }),
   isActive: Joi.bool().messages({
@@ -100,7 +102,7 @@ export const updateProjectBodySchema = Joi.object({
   description: Joi.string().messages({
     "string.base": "description must be of type string!",
   }),
-  artitectureStyle: Joi.string().messages({
+  artitectureStyle: Joi.string().allow("").messages({
     "string.base": "description must be of type string!",
   }),
   categoryId: Joi.string().messages({
@@ -109,7 +111,7 @@ export const updateProjectBodySchema = Joi.object({
   pictureId: Joi.string().messages({
     "string.base": "pictureId must be of type string!",
   }),
-  video: Joi.string().messages({
+  video: Joi.string().allow("").messages({
     "string.base": "video must be of type string!",
   }),
   area: Joi.number().messages({
@@ -118,7 +120,7 @@ export const updateProjectBodySchema = Joi.object({
   startDate: Joi.date().messages({
     "date.base": "startDate field must be of type date",
   }),
-  endDate: Joi.date().messages({
+  endDate: Joi.date().allow("").messages({
     "date.base": "endDate field must be of type date",
   }),
   isActive: Joi.bool().messages({

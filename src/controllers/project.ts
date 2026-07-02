@@ -78,7 +78,7 @@ export const findProject = catchAsync(
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"])
-      .populate("stpes.pictureId", ["image", "id"]);
+      .populate("steps.pictureId", ["image", "id"]);
     res.status(200).json({
       status: 200,
       message: "پروژه با موفقیت دریافت شد",
@@ -95,12 +95,13 @@ export const findProjectBySlug = catchAsync(
     if (!project) {
       return next(new CustomError(400, "پروژه ای با این نام وجود ندارد."));
     }
+    console.log("project", project);
     const projectWithImages = await ProjectModel.findById(project?.id)
       .populate("categoryId", ["title", "id"])
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"])
-      .populate("stpes.pictureId", ["image", "id"]);
+      .populate("steps.pictureId", ["image", "id"]);
     const suggestions = await ProjectModel.find({
       categoryId: project?.categoryId,
       _id: { $ne: project?.id },
@@ -215,7 +216,6 @@ export const updateProject = catchAsync(
     const removedIds = prvImageIds?.filter(
       (item: any) => !newImageIds.includes(item),
     );
-    console.log("removedIds", removedIds);
     await PictureModel.deleteMany({ _id: { $in: removedIds } });
 
     const newBfImageNames = newProject?.images

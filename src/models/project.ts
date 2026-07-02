@@ -28,7 +28,7 @@ const beforeAfterSchema = new mongoose.Schema({
 const stepSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "before image name is required!"],
+    required: [true, "step name is required!"],
   },
   pictureId: {
     type: mongoose.Types.ObjectId,
@@ -36,13 +36,16 @@ const stepSchema = new mongoose.Schema({
   },
   alt: {
     type: String,
-    required: [true, "before image name is required!"],
+    required: [true, "step image alt  is required!"],
   },
   isActive: {
     type: Boolean,
     default: false,
   },
   video: {
+    type: String,
+  },
+  description: {
     type: String,
   },
 });
@@ -65,11 +68,13 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
     },
     artitectureStyle: {
       type: String,
-      required: [true, "ArtitectureStyle field is required"],
     },
     alt: {
       type: String,
       required: [true, "ArtitectureStyle field is required"],
+    },
+    video: {
+      type: String,
     },
     address: {
       type: String,
