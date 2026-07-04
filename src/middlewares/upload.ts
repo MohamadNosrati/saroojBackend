@@ -1,8 +1,17 @@
 import type { Request } from "express";
 import multer from "multer";
 import CustomError from "../tools/CustomError.js";
+import fs from "fs";
+import path from "path";
+
 
 const acceptedTypes = ["jpg", "png", "webp", "jpeg"];
+
+const uploadsDir = path.join(process.cwd(), "uploads");
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 const fileFilter = (
   req: Request,
@@ -31,7 +40,7 @@ const fileFilter = (
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./uploads");
+    cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
     const uploadName = `${Math.round(Date.now())}-${file?.originalname}`;
