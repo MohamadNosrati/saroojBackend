@@ -6,21 +6,27 @@ const sliderSchema = new mongoose.Schema<ISliderSchema>(
   {
     title: {
       type: String,
-      required: [true, "title field is required"],
       lowercase: true,
-      unique: [true, "title filed must be unique!"],
+    },
+    titleEn: {
+      type: String,
+      lowercase: true,
     },
     link: {
       type: String,
-      required: [true, "title field is required"],
     },
     alt: {
       type: String,
       required: [true, "title field is required"],
     },
+    altEn: {
+      type: String,
+    },
     description: {
       type: String,
-      required: [true, "description field is required"],
+    },
+    descriptionEn: {
+      type: String,
     },
     isActive: {
       type: Boolean,

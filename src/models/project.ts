@@ -9,6 +9,9 @@ const beforeAfterSchema = new mongoose.Schema({
       type: String,
       required: [true, "before image name is required!"],
     },
+    nameEn: {
+      type: String,
+    },
     pictureId: {
       type: mongoose.Types.ObjectId,
       required: [true, "before image PictureId is required!"],
@@ -17,6 +20,9 @@ const beforeAfterSchema = new mongoose.Schema({
   },
   after: {
     name: {
+      type: String,
+    },
+    nameEn: {
       type: String,
     },
     pictureId: {
@@ -30,6 +36,9 @@ const stepSchema = new mongoose.Schema({
     type: String,
     required: [true, "step name is required!"],
   },
+  nameEn: {
+    type: String,
+  },
   pictureId: {
     type: mongoose.Types.ObjectId,
     ref: "Picture",
@@ -37,6 +46,9 @@ const stepSchema = new mongoose.Schema({
   alt: {
     type: String,
     required: [true, "step image alt  is required!"],
+  },
+  altEn: {
+    type: String,
   },
   isActive: {
     type: Boolean,
@@ -46,6 +58,9 @@ const stepSchema = new mongoose.Schema({
     type: String,
   },
   description: {
+    type: String,
+  },
+  descriptionEn: {
     type: String,
   },
 });
@@ -58,9 +73,17 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
       unique: [true, "title field is unique"],
       lowercase: true,
     },
+    titleEn: {
+      type: String,
+      unique: [true, "title field is unique"],
+      lowercase: true,
+    },
     description: {
       type: String,
       required: [true, "description field is required"],
+    },
+    descriptionEn: {
+      type: String,
     },
     area: {
       type: Number,
@@ -69,9 +92,15 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
     artitectureStyle: {
       type: String,
     },
+    artitectureStyleEn: {
+      type: String,
+    },
     alt: {
       type: String,
       required: [true, "ArtitectureStyle field is required"],
+    },
+    altEn: {
+      type: String,
     },
     video: {
       type: String,
@@ -79,6 +108,9 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
     address: {
       type: String,
       required: [true, "ArtitectureStyle field is required"],
+    },
+    addressEn: {
+      type: String,
     },
     startDate: {
       type: Date,

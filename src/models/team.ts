@@ -8,16 +8,23 @@ const teamsSchema = new mongoose.Schema<ITeamate>(
     title: {
       type: String,
       required: [true, "title field is required"],
-      lowercase: true,
+    },
+    titleEn: {
+      type: String,
     },
     alt: {
       type: String,
       required: [true, "title field is required"],
     },
+    altEn: {
+      type: String,
+    },
     position: {
       type: String,
       required: [true, "position field is required"],
-      lowercase: true,
+    },
+    positionEn: {
+      type: String,
     },
     telegram: {
       type: String,
@@ -30,6 +37,9 @@ const teamsSchema = new mongoose.Schema<ITeamate>(
     description: {
       type: String,
       required: [true, "description field is required"],
+    },
+    descriptionEn: {
+      type: String,
     },
     isActive: {
       type: Boolean,

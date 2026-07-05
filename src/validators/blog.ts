@@ -20,6 +20,15 @@ export const createBlogBodySchema = Joi.object({
     "string.base": "alt must be of type string!",
     "any.required": "alt field is required!",
   }),
+  altEn: Joi.string().allow("").messages({
+    "string.base": "altEn must be of type string!",
+  }),
+  descriptionEn: Joi.string().allow("").messages({
+    "string.base": "descriptionEn must be of type string!",
+  }),
+  titleEn: Joi.string().allow("").messages({
+    "string.base": "titleEn must be of type string!",
+  }),
 });
 
 export const updateBlogBodySchema = Joi.object({
@@ -37,5 +46,14 @@ export const updateBlogBodySchema = Joi.object({
   }),
   alt: Joi.string().messages({
     "string.base": "alt must be of type string!",
+  }),
+  altEn: Joi.string().allow("").messages({
+    "string.base": "altEn must be of type string!",
+  }),
+  descriptionEn: Joi.string().allow("").messages({
+    "string.base": "descriptionEn must be of type string!",
+  }),
+  titleEn: Joi.string().allow("").messages({
+    "string.base": "titleEn must be of type string!",
   }),
 });

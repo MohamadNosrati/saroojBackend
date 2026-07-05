@@ -5,6 +5,9 @@ const beforeAfterImageSchema = Joi.object({
     "string.base": "name must be of type string!",
     "any.required": "name field is required!",
   }),
+  nameEn: Joi.string().allow("").messages({
+    "string.base": "nameEn must be of type string!",
+  }),
   pictureId: Joi.string().required().messages({
     "string.base": "pictureId must be of type string!",
     "any.required": "pictureId field is required!",
@@ -14,6 +17,15 @@ const stepsSchema = Joi.object({
   name: Joi.string().required().messages({
     "string.base": "name must be of type string!",
     "any.required": "name field is required!",
+  }),
+  nameEn: Joi.string().allow("").messages({
+    "string.base": "nameEn must be of type string!",
+  }),
+  descriptionEn: Joi.string().allow("").messages({
+    "string.base": "descriptionEn must be of type string!",
+  }),
+  altEn: Joi.string().allow("").messages({
+    "string.base": "descriptionEn must be of type string!",
   }),
   pictureId: Joi.string().required().messages({
     "string.base": "pictureId must be of type string!",
@@ -137,5 +149,20 @@ export const updateProjectBodySchema = Joi.object({
   }),
   steps: Joi.array().items(stepsSchema).required().messages({
     "array.base": "images filed must be of type array!",
+  }),
+  altEn: Joi.string().allow("").messages({
+    "string.base": "altEn must be of type string!",
+  }),
+  descriptionEn: Joi.string().allow("").messages({
+    "string.base": "descriptionEn must be of type string!",
+  }),
+  titleEn: Joi.string().allow("").messages({
+    "string.base": "titleEn must be of type string!",
+  }),
+  addressEn: Joi.string().allow("").messages({
+    "string.base": "addressEn must be of type string!",
+  }),
+  artitectureStyleEn: Joi.string().allow("").messages({
+    "string.base": "artitectureStyleEn must be of type string!",
   }),
 });

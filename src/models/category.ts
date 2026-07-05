@@ -8,7 +8,7 @@ const categorySchema = new mongoose.Schema<ICategorySchema>(
       type: String,
       required: [true, "title field is required"],
       lowercase: true,
-      unique:[true,"title filed must be unique!"]
+      unique: [true, "title filed must be unique!"],
     },
     alt: {
       type: String,
@@ -17,6 +17,17 @@ const categorySchema = new mongoose.Schema<ICategorySchema>(
     description: {
       type: String,
       required: [true, "description field is required"],
+    },
+    titleEn: {
+      type: String,
+      lowercase: true,
+      unique: [true, "title filed must be unique!"],
+    },
+    descriptionEn: {
+      type: String,
+    },
+    altEn: {
+      type: String,
     },
     isActive: {
       type: Boolean,
@@ -30,7 +41,7 @@ const categorySchema = new mongoose.Schema<ICategorySchema>(
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
 
 categorySchema.plugin(idPlugin);

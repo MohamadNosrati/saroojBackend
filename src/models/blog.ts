@@ -10,6 +10,17 @@ const blogSchema = new mongoose.Schema<IBlogSchema>(
       lowercase: true,
       unique: [true, "title filed must be unique!"],
     },
+    titleEn: {
+      type: String,
+      lowercase: true,
+      unique: [true, "title filed must be unique!"],
+    },
+    descriptionEn: {
+      type: String,
+    },
+    altEn: {
+      type: String,
+    },
     alt: {
       type: String,
       required: [true, "title field is required"],

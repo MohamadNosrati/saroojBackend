@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 
 export interface ICategorySchema {
-    title: string;
-    description: string;
-    isActive: boolean;
-    pictureId: mongoose.Schema.Types.ObjectId;
-    alt: string;
-    createdAt: Date;
-    updatedAt: Date;
+  title: string;
+  description: string;
+  isActive: boolean;
+  pictureId: mongoose.Schema.Types.ObjectId;
+  alt: string;
+  createdAt: Date;
+  updatedAt: Date;
+  descriptionEn?: string;
+  altEn?: string;
+  titleEn?: string;
 }

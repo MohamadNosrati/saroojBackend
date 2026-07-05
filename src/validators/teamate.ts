@@ -30,6 +30,18 @@ export const createTeamateBodySchema = Joi.object({
   isActive: Joi.bool().messages({
     "bool.base": "is Active field must be of type boolean",
   }),
+  altEn: Joi.string().allow("").messages({
+    "string.base": "altEn must be of type string!",
+  }),
+  descriptionEn: Joi.string().allow("").messages({
+    "string.base": "descriptionEn must be of type string!",
+  }),
+  titleEn: Joi.string().allow("").messages({
+    "string.base": "titleEn must be of type string!",
+  }),
+  positionEn: Joi.string().allow("").messages({
+    "string.base": "titleEn must be of type string!",
+  }),
 });
 
 export const updateTeamateBodySchema = Joi.object({
@@ -56,5 +68,17 @@ export const updateTeamateBodySchema = Joi.object({
   }),
   isActive: Joi.bool().messages({
     "bool.base": "is Active field must be of type boolean",
+  }),
+  altEn: Joi.string().allow("").messages({
+    "string.base": "altEn must be of type string!",
+  }),
+  descriptionEn: Joi.string().allow("").messages({
+    "string.base": "descriptionEn must be of type string!",
+  }),
+  titleEn: Joi.string().allow("").messages({
+    "string.base": "titleEn must be of type string!",
+  }),
+  positionEn: Joi.string().allow("").messages({
+    "string.base": "titleEn must be of type string!",
   }),
 });
