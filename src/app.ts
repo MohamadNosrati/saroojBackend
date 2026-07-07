@@ -17,6 +17,7 @@ import subscriptionRouter from "./routes/subscription.js";
 import notificationRouter from "./routes/notification.js";
 import conversationRouter from "./routes/conversation.js";
 import messagesRouter from "./routes/message.js";
+import translateRouter from "./routes/translate.js";
 
 dotenv.config();
 const app = express();
@@ -41,6 +42,7 @@ app.use("/subscriptions", subscriptionRouter);
 app.use("/notifications", notificationRouter);
 app.use("/conversations", conversationRouter);
 app.use("/messages", messagesRouter);
+app.use("/translate", translateRouter);
 
 app.use(notFoundErrorHandler);
 app.use(globalErrorHandler);

@@ -5,4 +5,5 @@ export interface ICommentSchema {
   createdAt:Date;
   updatedAt:Date;
   isActive:boolean;
+  type:"persian" | "english";
 }

@@ -62,7 +62,6 @@ export const deleteCategory = catchAsync(
 export const updateCategory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const category = await checkExists(CategoryModel, next, "دسته بندی", req.params?.id);
-    await checkUnique(CategoryModel, next, "title", req?.body?.title, "دسته بندی")
     const newCategory = await CategoryModel.findByIdAndUpdate(
       req?.params?.id,
       { $set: req?.body },

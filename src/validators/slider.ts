@@ -3,10 +3,12 @@ import Joi from "joi";
 export const createSliderBodySchema = Joi.object({
   title: Joi.string().required().messages({
     "string.base": "title must be of type string!",
-    "any.required": "title field is required!",
   }),
   link: Joi.string().allow("").required().messages({
-    "string.base": "title must be of type string!",
+    "string.base": "link must be of type string!",
+  }),
+  linkEn: Joi.string().allow("").required().messages({
+    "string.base": "linkEn must be of type string!",
   }),
   description: Joi.string().required().messages({
     "string.base": "description must be of type string!",
@@ -27,15 +29,6 @@ export const createSliderBodySchema = Joi.object({
     "string.base": "alt must be of type string!",
     "any.required": "alt field is required!",
   }),
-  altEn: Joi.string().allow("").messages({
-    "string.base": "altEn must be of type string!",
-  }),
-  descriptionEn: Joi.string().allow("").messages({
-    "string.base": "descriptionEn must be of type string!",
-  }),
-  titleEn: Joi.string().allow("").messages({
-    "string.base": "titleEn must be of type string!",
-  }),
 });
 
 export const updateSliderBodySchema = Joi.object({
@@ -43,7 +36,10 @@ export const updateSliderBodySchema = Joi.object({
     "string.base": "title must be of type string!",
   }),
   link: Joi.string().allow("").messages({
-    "string.base": "title must be of type string!",
+    "string.base": "link must be of type string!",
+  }),
+  linkEn: Joi.string().allow("").messages({
+    "string.base": "linkEn must be of type string!",
   }),
   description: Joi.string().messages({
     "string.base": "description must be of type string!",

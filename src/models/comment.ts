@@ -21,6 +21,11 @@ const commentSchema = new mongoose.Schema<ICommentSchema>(
       type: Boolean,
       default: false,
     },
+    type: {
+      type: String,
+      enum: ["persian", "english"],
+      required: [true, "type field is required"],
+    }
   },
   {
     versionKey:false,

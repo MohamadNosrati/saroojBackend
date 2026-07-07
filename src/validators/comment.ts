@@ -17,6 +17,9 @@ export const createCommentBodySchema = Joi.object({
   isActive: Joi.bool().messages({
     "bool.base": "is Active field must be of type boolean",
   }),
+  type: Joi.bool().messages({
+    "bool.base": "type field must be of type boolean",
+  }),
 });
 
 export const updateCommentBodySchema = Joi.object({
@@ -33,5 +36,7 @@ export const updateCommentBodySchema = Joi.object({
   isActive: Joi.bool().messages({
     "bool.base": "is Active field must be of type boolean",
   }),
+  type: Joi.bool().messages({
+    "bool.base": "type field must be of type boolean",
+  }),
 });
-

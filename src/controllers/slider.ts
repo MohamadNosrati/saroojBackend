@@ -3,7 +3,6 @@ import catchAsync from "../tools/catchAsync.js";
 import checkExists from "../tools/checkExsits.js";
 import pictureDeleter from "../tools/pictureDeleter.js";
 import SliderModel from "../models/slider.js";
-// import { translator } from "../services/translator.js";
 
 export const createSlider = catchAsync(async (req: Request, res: Response) => {
   const slider = await SliderModel.create(req.body);
@@ -32,7 +31,7 @@ export const findSlider = catchAsync(
       ?.populate("pictureId", ["image", "id"])
       ?.populate("mobilePictureId", ["image", "id"]);
 
-      console.log("slider",slider)
+    console.log("slider", slider);
     res.status(201).json({
       status: 201,
       message: "اسلایدر با موفقیت دریافت شد",
@@ -68,13 +67,12 @@ export const updateSlider = catchAsync(
         runValidators: true,
       },
     );
-    if (
-      slider?.pictureId?.toString() !== newSlider?.pictureId?.toString()
-    ) {
+    if (slider?.pictureId?.toString() !== newSlider?.pictureId?.toString()) {
       await pictureDeleter(slider?.pictureId);
     }
     if (
-      slider?.mobilePictureId?.toString() !== newSlider?.mobilePictureId?.toString()
+      slider?.mobilePictureId?.toString() !==
+      newSlider?.mobilePictureId?.toString()
     ) {
       await pictureDeleter(slider?.mobilePictureId);
     }
