@@ -18,13 +18,13 @@ import notificationRouter from "./routes/notification.js";
 import conversationRouter from "./routes/conversation.js";
 import messagesRouter from "./routes/message.js";
 import translateRouter from "./routes/translate.js";
+import assistantRouter from "./routes/assistant.js";
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
-
 
 /// app routes
 
@@ -43,6 +43,7 @@ app.use("/notifications", notificationRouter);
 app.use("/conversations", conversationRouter);
 app.use("/messages", messagesRouter);
 app.use("/translate", translateRouter);
+app.use("/assistant", assistantRouter);
 
 app.use(notFoundErrorHandler);
 app.use(globalErrorHandler);
