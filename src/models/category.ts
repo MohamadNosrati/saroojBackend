@@ -7,7 +7,6 @@ const categorySchema = new mongoose.Schema<ICategorySchema>(
     title: {
       type: String,
       required: [true, "title field is required"],
-      lowercase: true,
       unique: [true, "title filed must be unique!"],
     },
     alt: {
@@ -21,7 +20,6 @@ const categorySchema = new mongoose.Schema<ICategorySchema>(
     titleEn: {
       type: String,
       lowercase: true,
-      unique: [true, "title filed must be unique!"],
     },
     descriptionEn: {
       type: String,
