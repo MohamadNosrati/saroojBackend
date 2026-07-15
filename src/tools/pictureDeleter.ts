@@ -1,14 +1,20 @@
-import fs from "fs";
 import PictureModel from "../models/picture.js";
 import type mongoose from "mongoose";
 
-export const unlinkFile = (image?: string) => {
-  if (image) {
-    fs.unlink(`./uploads/${image}`, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
+import fs from "fs/promises";
+import path from "path";
+
+export const unlinkFile = async (image?: string) => {
+  if (!image) return;
+
+  const filePath = path.join(process.cwd(), "uploads", image);
+
+  try {
+    await fs.unlink(filePath);
+  } catch (err: any) {
+    if (err.code !== "ENOENT") {
+      console.error("Failed to delete file:", err);
+    }
   }
 };
 

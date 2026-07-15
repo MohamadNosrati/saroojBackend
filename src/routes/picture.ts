@@ -1,7 +1,12 @@
 import express from "express";
 import authentication from "../middlewares/authenction.js";
 import authorization from "../middlewares/authorization.js";
-import { deletePicture, findPicture, uploadPicture } from "../controllers/picture.js";
+import {
+  deletePicture,
+  findPicture,
+  getAllPics,
+  uploadPicture,
+} from "../controllers/picture.js";
 import Multer from "../middlewares/upload.js";
 import { createValidator } from "express-joi-validation";
 import { pictureSchema } from "../validators/picture.js";
@@ -12,8 +17,21 @@ const validator = createValidator({
 
 const pictureRouter = express.Router();
 
-pictureRouter.get("/:id",findPicture)
-pictureRouter.post("/upload",authentication,authorization(["admin"]),validator.body(pictureSchema),Multer.single("image"),uploadPicture);
-pictureRouter.delete("/delete",authentication,authorization(["admin"]),deletePicture);
+pictureRouter.get("/:id", findPicture);
+pictureRouter.get("/", authentication, authorization(["admin"]), getAllPics);
+pictureRouter.post(
+  "/upload",
+  authentication,
+  authorization(["admin"]),
+  validator.body(pictureSchema),
+  Multer.single("image"),
+  uploadPicture,
+);
+pictureRouter.delete(
+  "/:id",
+  authentication,
+  authorization(["admin"]),
+  deletePicture,
+);
 
 export default pictureRouter;
