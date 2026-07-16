@@ -4,6 +4,7 @@ import {
   deleteProject,
   findProject,
   findProjectBySlug,
+  getAllInfo,
   getAllProjects,
   getAllSlugs,
   updateProject,
@@ -24,6 +25,7 @@ const projectRouter = express.Router();
 
 projectRouter.get("/", getAllProjects);
 projectRouter.get("/get-all-slugs", getAllSlugs);
+projectRouter.get("/get-all-info", getAllInfo);
 projectRouter.get("/:id", findProject);
 projectRouter.get("/find-by-slug/:slug", findProjectBySlug);
 projectRouter.post(
@@ -31,20 +33,20 @@ projectRouter.post(
   authentication,
   authorization(["admin"]),
   validator.body(createProjectBodySchema),
-  createProject
+  createProject,
 );
 projectRouter.delete(
   "/:id",
   authentication,
   authorization(["admin"]),
-  deleteProject
+  deleteProject,
 );
 projectRouter.patch(
   "/:id",
   authentication,
   authorization(["admin"]),
   validator.body(updateProjectBodySchema),
-  updateProject
+  updateProject,
 );
 
 export default projectRouter;

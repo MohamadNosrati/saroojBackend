@@ -64,7 +64,6 @@ export const translator = async (payload: Record<string, string>) => {
   const openrouter = new OpenRouter({
     apiKey: process.env.OPENROUTERAPIKEY,
   });
-  console.log("payload", payload);
   const stream = await openrouter.chat.send({
     chatRequest: {
       model: "nvidia/nemotron-3-super-120b-a12b:free",
@@ -81,7 +80,5 @@ export const translator = async (payload: Record<string, string>) => {
       stream: false,
     },
   });
-  console.log("stream", stream);
-  console.log("steam", stream.choices[0]?.message?.content);
   return JSON.parse(stream.choices[0]?.message?.content);
 };

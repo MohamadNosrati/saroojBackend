@@ -70,6 +70,26 @@ export const getAllSlugs = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+export const getAllInfo = catchAsync(async (req: Request, res: Response) => {
+  const projects = await ProjectModel.find()
+    .select([
+      "id",
+      "title",
+      "description",
+      "area",
+      "alt",
+      "address",
+      "artitectureStyle",
+    ])
+    ?.limit(100)
+    .where("isActive", true);
+  res.status(200).json({
+    status: 200,
+    message: "لیست  اظلاعات پروزه ها با موفقیت دریافت شد.",
+    data: projects,
+  });
+});
+
 export const findProject = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     await checkExists(ProjectModel, next, "پروژه", req.params?.id);

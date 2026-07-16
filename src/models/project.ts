@@ -107,7 +107,7 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
     },
     address: {
       type: String,
-      required: [true, "ArtitectureStyle field is required"],
+      required: [true, "address field is required"],
     },
     addressEn: {
       type: String,
