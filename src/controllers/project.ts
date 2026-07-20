@@ -148,8 +148,7 @@ export const deleteProject = catchAsync(
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"])
-      .populate("steps..pictureId", ["image", "id"]);
-    console.log("project", project?.images[0]);
+      .populate("steps.pictureId", ["image", "id"]);
     const bfImageIds: string[] =
       project?.images
         ?.map(({ before, after }: any) => [
@@ -185,11 +184,44 @@ export const updateProject = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     await checkExists(ProjectModel, next, "پروژه", req.params?.id);
 
+    const body = req?.body;
+    const updateData: Record<string, any> = {
+      titleEn: body.titleEn,
+      descriptionEn: body.descriptionEn,
+      altEn: body.altEn,
+      addressEn: body.addressEn,
+      artitectureStyleEn: body.artitectureStyleEn,
+    };
+
+    body.images?.forEach((image: any, i: number) => {
+      if (image.before?.nameEn) {
+        updateData[`images.${i}.before.nameEn`] = image.before.nameEn;
+      }
+
+      if (image.after?.nameEn) {
+        updateData[`images.${i}.after.nameEn`] = image.after.nameEn;
+      }
+    });
+
+    body.steps?.forEach((step: any, i: number) => {
+      if (step.nameEn) {
+        updateData[`steps.${i}.nameEn`] = step.nameEn;
+      }
+
+      if (step.altEn) {
+        updateData[`steps.${i}.altEn`] = step.altEn;
+      }
+
+      if (step.descriptionEn) {
+        updateData[`steps.${i}.descriptionEn`] = step.descriptionEn;
+      }
+    });
+
     const project: any = await ProjectModel.findById(req?.params?.id)
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
-      .populate("images.after.pictureId", ["image", "id"]);
-    console.log("hereeee");
+      .populate("images.after.pictureId", ["image", "id"])
+      .populate("steps.pictureId", ["image", "id"]);
     const newProject: any = await ProjectModel.findByIdAndUpdate(
       req?.params?.id,
       {
@@ -210,27 +242,33 @@ export const updateProject = catchAsync(
       await pictureDeleter(project?.pictureId.id);
     }
 
-    const newBfImageIds = newProject?.images
-      ?.map(({ before, after }: any) => [
-        before?.pictureId?.id,
-        after?.pictureId?.id,
-      ])
-      ?.flatMap((elem: any) => elem?.toString());
-    const newStepsImageIds = newProject?.steps?.map(
-      (item: any) => item?.pictureId?.id,
-    );
+    // Handling Removing Extra Files
+
+    const newBfImageIds =
+      newProject?.images
+        ?.flatMap(({ before, after }: any) => [
+          before?.pictureId?.id?.toString(),
+          after?.pictureId?.id?.toString(),
+        ])
+        ?.filter(Boolean) ?? [];
+    const newStepsImageIds =
+      newProject.steps
+        .map((item: any) => item.pictureId?.id?.toString())
+        ?.filter(Boolean) ?? [];
 
     const newImageIds = [...newBfImageIds, ...newStepsImageIds];
 
-    const prvBfImageIds = project?.images
-      ?.map(({ before, after }: any) => [
-        before?.pictureId?.id,
-        after?.pictureId?.id,
-      ])
-      ?.flatMap((elem: any) => elem?.toString());
-    const prvStepsImageIds = project?.images?.map(
-      (item: any) => item?.pictureId?.image,
-    );
+    const prvBfImageIds =
+      project?.images
+        ?.flatMap(({ before, after }: any) => [
+          before?.pictureId?.id?.toString(),
+          after?.pictureId?.id?.toString(),
+        ])
+        ?.filter(Boolean) ?? [];
+    const prvStepsImageIds =
+      project?.steps
+        ?.map((item: any) => item?.pictureId?.id?.toString())
+        ?.filter(Boolean) ?? [];
 
     const prvImageIds = [...prvBfImageIds, ...prvStepsImageIds];
     const removedIds = prvImageIds?.filter(
@@ -239,26 +277,29 @@ export const updateProject = catchAsync(
     await PictureModel.deleteMany({ _id: { $in: removedIds } });
 
     const newBfImageNames = newProject?.images
-      ?.map(({ before, after }: any) => [
+      ?.flatMap(({ before, after }: any) => [
         before?.pictureId?.image,
         after?.pictureId?.image,
       ])
-      ?.flatMap((elem: any) => elem);
+      ?.filter(Boolean);
 
-    const newStepsImageNames = newProject?.steps?.map(
-      (item: any) => item?.pictureId?.image,
-    );
+    const newStepsImageNames =
+      newProject?.steps
+        ?.map((item: any) => item?.pictureId?.image)
+        ?.filter(Boolean) ?? [];
 
-    const prvBfImageNames = project?.images
-      ?.map(({ before, after }: any) => [
-        before?.pictureId?.image,
-        after?.pictureId?.image,
-      ])
-      ?.flatMap((elem: any) => elem);
+    const prvBfImageNames =
+      project?.images
+        ?.flatMap(({ before, after }: any) => [
+          before?.pictureId?.image,
+          after?.pictureId?.image,
+        ])
+        ?.filter(Boolean) ?? [];
 
-    const prvStepsImageNames = project?.steps?.map(
-      (item: any) => item?.pictureId?.image,
-    );
+    const prvStepsImageNames =
+      project?.steps
+        ?.map((item: any) => item?.pictureId?.image)
+        .filter(Boolean) ?? [];
 
     const prvImageNames = [...prvBfImageNames, ...prvStepsImageNames];
     const newImageNames = [...newBfImageNames, ...newStepsImageNames];
@@ -267,7 +308,7 @@ export const updateProject = catchAsync(
       (item: any) => !newImageNames.includes(item),
     );
 
-    removedImageNames?.forEach((item: any) => unlinkFile(item));
+    await Promise.all(removedImageNames.map(unlinkFile));
     res.status(201).json({
       status: 201,
       message: "پروزه با موفقیت به روز رسانی شد.",

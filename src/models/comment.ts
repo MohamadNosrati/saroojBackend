@@ -7,7 +7,7 @@ const commentSchema = new mongoose.Schema<ICommentSchema>(
     fullName: {
       type: String,
       required: [true, "fullName field is required"],
-      lowercase: true
+      lowercase: true,
     },
     text: {
       type: String,
@@ -25,15 +25,16 @@ const commentSchema = new mongoose.Schema<ICommentSchema>(
       type: String,
       enum: ["persian", "english"],
       required: [true, "type field is required"],
-    }
+      default: "persian",
+    },
   },
   {
-    versionKey:false,
+    versionKey: false,
     timestamps: true,
-  }
+  },
 );
 
-commentSchema.plugin(idPlugin)
+commentSchema.plugin(idPlugin);
 
 const CommentModel = mongoose.model("Comment", commentSchema);
 

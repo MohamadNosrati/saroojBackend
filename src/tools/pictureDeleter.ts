@@ -20,7 +20,10 @@ export const unlinkFile = async (image?: string) => {
 
 const pictureDeleter = async (pictureId: mongoose.Schema.Types.ObjectId) => {
   const picture = await PictureModel.findByIdAndDelete(pictureId);
-  unlinkFile(picture?.image);
+
+  if (!picture) return;
+
+  await unlinkFile(picture.image);
 };
 
 export default pictureDeleter;
