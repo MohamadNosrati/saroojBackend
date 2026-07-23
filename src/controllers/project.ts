@@ -61,7 +61,7 @@ export const getAllProjects = catchAsync(
 );
 
 export const getAllSlugs = catchAsync(async (req: Request, res: Response) => {
-  const projects = await ProjectModel.find().select(["id", "title"])?.limit(40);
+  const projects = await ProjectModel.find().select(["id", "title","titleEn"])?.limit(40);
   res.status(200).json({
     status: 200,
     message: "لیست پروزه ها با موفقیت دریافت شد.",

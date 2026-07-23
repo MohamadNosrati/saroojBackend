@@ -58,11 +58,13 @@ export const getAllBlogs = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getAllSlugs = catchAsync(async (req: Request, res: Response) => {
-  const projects = await BlogModel.find().select(["id", "title"])?.limit(40);
+  const blogs = await BlogModel.find()
+    .select(["id", "title", "titleEn"])
+    ?.limit(40);
   res.status(200).json({
     status: 200,
-    message: "لیست پروزه ها با موفقیت دریافت شد.",
-    data: projects,
+    message: "لیست مقالات با موفقیت دریافت شد.",
+    data: blogs,
   });
 });
 
