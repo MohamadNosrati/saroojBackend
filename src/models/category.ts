@@ -19,6 +19,8 @@ const categorySchema = new mongoose.Schema<ICategorySchema>(
     },
     titleEn: {
       type: String,
+      unique: true,
+      default: null,
       lowercase: true,
     },
     descriptionEn: {

@@ -11,6 +11,8 @@ const blogSchema = new mongoose.Schema<IBlogSchema>(
     },
     titleEn: {
       type: String,
+      unique: true,
+      default: null,
       lowercase: true,
     },
     descriptionEn: {

@@ -9,9 +9,6 @@ const beforeAfterSchema = new mongoose.Schema({
       type: String,
       required: [true, "before image name is required!"],
     },
-    nameEn: {
-      type: String,
-    },
     pictureId: {
       type: mongoose.Types.ObjectId,
       required: [true, "before image PictureId is required!"],
@@ -22,10 +19,29 @@ const beforeAfterSchema = new mongoose.Schema({
     name: {
       type: String,
     },
+    pictureId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Picture",
+    },
+  },
+});
+const beforeAfterEnSchema = new mongoose.Schema({
+  beforeEn: {
+    nameEn: {
+      type: String,
+      required: [true, "before image name is required!"],
+    },
+    pictureIdEn: {
+      type: mongoose.Types.ObjectId,
+      required: [true, "before image PictureId is required!"],
+      ref: "Picture",
+    },
+  },
+  afterEn: {
     nameEn: {
       type: String,
     },
-    pictureId: {
+    pictureIdEn: {
       type: mongoose.Types.ObjectId,
       ref: "Picture",
     },
@@ -36,9 +52,6 @@ const stepSchema = new mongoose.Schema({
     type: String,
     required: [true, "step name is required!"],
   },
-  nameEn: {
-    type: String,
-  },
   pictureId: {
     type: mongoose.Types.ObjectId,
     ref: "Picture",
@@ -46,9 +59,6 @@ const stepSchema = new mongoose.Schema({
   alt: {
     type: String,
     required: [true, "step image alt  is required!"],
-  },
-  altEn: {
-    type: String,
   },
   isActive: {
     type: Boolean,
@@ -58,6 +68,27 @@ const stepSchema = new mongoose.Schema({
     type: String,
   },
   description: {
+    type: String,
+  },
+});
+const stepsEnSchema = new mongoose.Schema({
+  nameEn: {
+    type: String,
+    required: [true, "step name is required!"],
+  },
+  pictureIdEn: {
+    type: mongoose.Types.ObjectId,
+    ref: "Picture",
+  },
+  altEn: {
+    type: String,
+    required: [true, "step image alt  is required!"],
+  },
+  isActiveEn: {
+    type: Boolean,
+    default: false,
+  },
+  videoEn: {
     type: String,
   },
   descriptionEn: {
@@ -75,7 +106,8 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
     },
     titleEn: {
       type: String,
-      unique: [true, "title field is unique"],
+      unique: true,
+      default: null,
       lowercase: true,
     },
     description: {
@@ -134,7 +166,9 @@ const projectSchema = new mongoose.Schema<IProjectSchema>(
       ref: "Picture",
     },
     images: [beforeAfterSchema],
+    imagesEn: [beforeAfterEnSchema],
     steps: [stepSchema],
+    stepsEn: [stepsEnSchema],
   },
   {
     timestamps: true,

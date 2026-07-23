@@ -62,7 +62,6 @@ export const getAllProjects = catchAsync(
 
 export const getAllSlugs = catchAsync(async (req: Request, res: Response) => {
   const projects = await ProjectModel.find().select(["id", "title"])?.limit(40);
-  console.log("projectIds", projects);
   res.status(200).json({
     status: 200,
     message: "لیست پروزه ها با موفقیت دریافت شد.",
@@ -97,8 +96,11 @@ export const findProject = catchAsync(
       .populate("categoryId", ["title", "id"])
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
+      .populate("imagesEn.beforeEn.pictureIdEn", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"])
-      .populate("steps.pictureId", ["image", "id"]);
+      .populate("imagesEn.afterEn.pictureIdEn", ["image", "id"])
+      .populate("steps.pictureId", ["image", "id"])
+      .populate("stepsEn.pictureIdEn", ["image", "id"]);
     res.status(200).json({
       status: 200,
       message: "پروژه با موفقیت دریافت شد",
@@ -120,8 +122,11 @@ export const findProjectBySlug = catchAsync(
       .populate("categoryId", ["title", "id"])
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
+      .populate("imagesEn.beforeEn.pictureIdEn", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"])
-      .populate("steps.pictureId", ["image", "id"]);
+      .populate("imagesEn.afterEn.pictureIdEn", ["image", "id"])
+      .populate("steps.pictureId", ["image", "id"])
+      .populate("stepsEn.pictureIdEn", ["image", "id"]);
     const suggestions = await ProjectModel.find({
       categoryId: project?.categoryId,
       _id: { $ne: project?.id },
@@ -184,44 +189,12 @@ export const updateProject = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     await checkExists(ProjectModel, next, "پروژه", req.params?.id);
 
-    const body = req?.body;
-    const updateData: Record<string, any> = {
-      titleEn: body.titleEn,
-      descriptionEn: body.descriptionEn,
-      altEn: body.altEn,
-      addressEn: body.addressEn,
-      artitectureStyleEn: body.artitectureStyleEn,
-    };
-
-    body.images?.forEach((image: any, i: number) => {
-      if (image.before?.nameEn) {
-        updateData[`images.${i}.before.nameEn`] = image.before.nameEn;
-      }
-
-      if (image.after?.nameEn) {
-        updateData[`images.${i}.after.nameEn`] = image.after.nameEn;
-      }
-    });
-
-    body.steps?.forEach((step: any, i: number) => {
-      if (step.nameEn) {
-        updateData[`steps.${i}.nameEn`] = step.nameEn;
-      }
-
-      if (step.altEn) {
-        updateData[`steps.${i}.altEn`] = step.altEn;
-      }
-
-      if (step.descriptionEn) {
-        updateData[`steps.${i}.descriptionEn`] = step.descriptionEn;
-      }
-    });
-
     const project: any = await ProjectModel.findById(req?.params?.id)
       .populate("pictureId", ["image", "id"])
       .populate("images.before.pictureId", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"])
       .populate("steps.pictureId", ["image", "id"]);
+    console.log("newProject", project);
     const newProject: any = await ProjectModel.findByIdAndUpdate(
       req?.params?.id,
       {
@@ -236,6 +209,7 @@ export const updateProject = catchAsync(
       .populate("images.before.pictureId", ["image", "id"])
       .populate("images.after.pictureId", ["image", "id"])
       .populate("steps.pictureId", ["image", "id"]);
+
     if (
       newProject?.pictureId.id?.toString() !== project?.pictureId.id?.toString()
     ) {

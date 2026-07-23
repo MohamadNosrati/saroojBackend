@@ -4,6 +4,7 @@ import { translator } from "../services/translator.js";
 
 export const translate = catchAsync(
   async (req: Request, res: Response, next) => {
+    console.log('req.body',req.body)
     const data = await translator(req?.body);
     res.status(201).json({
       status: 201,

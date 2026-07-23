@@ -1,8 +1,8 @@
 import Joi from "joi";
 
 const translateSchema = Joi.object().pattern(
-  Joi.string(), // key must be a string
-  Joi.string()  // value must be a string
+  Joi.string(),
+  Joi.alternatives().try(Joi.string(), Joi.array(), Joi.object()),
 );
 
-export default translateSchema;
+export default translateSchema

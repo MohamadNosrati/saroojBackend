@@ -10,6 +10,8 @@ const sliderSchema = new mongoose.Schema<ISliderSchema>(
     },
     titleEn: {
       type: String,
+      unique: true,
+      default: null,
       lowercase: true,
     },
     link: {

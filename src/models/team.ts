@@ -7,9 +7,13 @@ const teamsSchema = new mongoose.Schema<ITeamate>(
   {
     title: {
       type: String,
+      unique: true,
+      default: null,
       required: [true, "title field is required"],
     },
     titleEn: {
+      unique: true,
+      default: null,
       type: String,
     },
     alt: {
@@ -53,7 +57,7 @@ const teamsSchema = new mongoose.Schema<ITeamate>(
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
 
 teamsSchema.plugin(idPlugin);
